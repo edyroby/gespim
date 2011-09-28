@@ -44,10 +44,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="areaCompetenza">Area Competenza</label>
+                                  <label for="areaCompetenzaId">Area Competenza</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: praticaInstance, field: 'tipologiaLegale', 'errors')}">
-                                    <g:select name="areaCompetenza" from="${it.solvingteam.gespim.assegnazione.AreaCompetenza.list()}" optionKey="id"  noSelection="['null': '']" />
+                                    <g:select name="areaCompetenzaId" from="${it.solvingteam.gespim.assegnazione.AreaCompetenza.list()}" optionKey="id"  noSelection="['null': '']" value="${assegnazionePraticaInstance?.areaCompetenza?.id }"/>
                                 </td>
                             </tr>
                         	<tr class="prop">
@@ -57,7 +57,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                	<g:actionSubmit id="mysubmit"  action="update" value="Conferma" />
+                	<g:actionSubmit id="mysubmit"  action="confermaAssegnazione" value="Conferma" />
                     <%-- 
                     <span class="button">
                     	<g:actionSubmit class="save" action="update" value="Modifica" />

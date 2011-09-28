@@ -12,6 +12,7 @@ class AreaCompetenza {
     static constraints = {
 		codice(blank:false,unique:true)
 		descrizione(blank:false,unique:true)
+		utenti(nullable:true)
     }
 	
 	String toString(){

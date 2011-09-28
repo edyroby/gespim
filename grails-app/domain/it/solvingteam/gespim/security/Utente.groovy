@@ -1,5 +1,7 @@
 package it.solvingteam.gespim.security
 
+import it.solvingteam.gespim.assegnazione.AreaCompetenza;
+
 class Utente {
 
 	transient springSecurityService
@@ -10,10 +12,13 @@ class Utente {
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+	
+	AreaCompetenza area
 
 	static constraints = {
 		username blank: false, unique: true
 		password blank: false
+		area nullable:true
 	}
 
 	static mapping = {

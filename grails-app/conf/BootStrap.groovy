@@ -14,8 +14,8 @@ class BootStrap {
     def init = { servletContext ->
 		String webdir = servletContext.getRealPath("/")
 		
-		prepareUserRole()
 		prepareTipologiche(webdir)
+		prepareUserRole()
 		
 		//dati di prova
 		fixtureLoader.load('pratiche')
@@ -28,10 +28,30 @@ class BootStrap {
 		def adminRole = new Ruolo(authority: 'ROLE_ADMIN').save(flush: true)
 		def userRole = new Ruolo(authority: 'ROLE_USER').save(flush: true)
   
-		def testUser = new Utente(username: 'me', enabled: true, password: 'password')
+		def testUser = new Utente(username: 'me', enabled: true, password: '222')
 		testUser.save(flush: true)
+		
+		def testUser2 = new Utente(username: 'legale', enabled: true, password: '222')
+		def area2 = AreaCompetenza.findByCodice('AC001')
+		if(area2){
+			testUser2.area = area2
+			area2.addToUtenti(testUser2)
+		}
+		testUser2.save(flush: true)
+		area2.save(flush:true)
+		
+		def testUser3 = new Utente(username: 'flussi', enabled: true, password: '222')
+		def area3 = AreaCompetenza.findByCodice('AC002')
+		if(area3){
+			testUser3.area = area3
+			
+		}
+		testUser3.save(flush: true)
+		area3.save(flush:true)
   
 		UtenteRuolo.create testUser, adminRole, true
+		UtenteRuolo.create testUser2, userRole, true
+		UtenteRuolo.create testUser3, userRole, true
 		
 		RequestMap.findByUrlAndConfigAttribute('/**', 'IS_AUTHENTICATED_FULLY')?:new RequestMap(url:'/**', configAttribute:'IS_AUTHENTICATED_FULLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/login/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/login/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()

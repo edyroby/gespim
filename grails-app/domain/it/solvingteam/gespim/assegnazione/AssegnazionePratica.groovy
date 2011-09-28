@@ -6,11 +6,26 @@ class AssegnazionePratica {
 	
 	Pratica praticaAssegnata
 	AreaCompetenza areaCompetenza
+	Date dataAssegnazione
 	boolean presaInCarico
 	
 
     static constraints = {
 		praticaAssegnata(nullable:false)
-		areeDiCompetenza(nullable:false)
+		areaCompetenza(nullable:false)
+		dataAssegnazione(nullable:true)
     }
+	
+	
+	static AssegnazionePratica findAssegnazioneByPraticaAndUtenza(pratica,user){
+		def c = AssegnazionePratica.createCriteria()
+		def result = c.list(){
+			eq 'praticaAssegnata',pratica
+			areaCompetenza{
+				utenti{
+					eq 'id',user.id
+				}
+			}
+		}
+	}
 }

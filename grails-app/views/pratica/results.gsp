@@ -68,8 +68,7 @@
                             <td>${fieldValue(bean: praticaInstance, field: "tipoPratica")}</td>
                             
                             <td class="w12pc">
-                            	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }">Visualizza</g:link>
-                            	<g:link class="show" action="">Modifica</g:link>
+                            	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }">Dettaglio</g:link>
                             </td>
                         
                         </tr>
