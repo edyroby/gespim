@@ -3,6 +3,7 @@ package it.solvingteam.gespim.pratica
 import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.StatoPratica;
 import it.solvingteam.gespim.tipologiche.TipologiaLegale;
+import it.solvingteam.gespim.assegnazione.AssegnazionePratica;
 
 class Pratica {
 
@@ -18,7 +19,7 @@ class Pratica {
 	
 	Richiedente richiedente
 	
-	static hasMany = [beneficiari:Beneficiario]
+	static hasMany = [beneficiari:Beneficiario,assegnazioni:AssegnazionePratica]
 
 
 	static constraints = {
@@ -30,6 +31,7 @@ class Pratica {
 		tipoPratica(nullable:false)
 		richiedente(nullable:true)
 		beneficiari(nullable:true)
+		assegnazioni(nullable:true)
 	}
 	
 	def static cercaPratiche(cmd,params){

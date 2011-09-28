@@ -168,7 +168,7 @@
                 <g:form>
                     <g:hiddenField name="id" value="${praticaInstance?.id}" />
                     <g:actionSubmit id="mysubmit" action="edit" value="Modifica" />
-                    <g:actionSubmit id="mysubmit" action="xxx" value="Assegnazione" />
+                    <g:actionSubmit id="mysubmit" action="assegnazione" value="Assegnazione" />
                     <g:actionSubmit id="mysubmit" action="xxx" value="Convocazione" />
                     <g:actionSubmit id="mysubmit" action="xxx" value="Emetti Atto" />
                     <g:actionSubmit id="mysubmit" action="xxx" value="Evidenza" />

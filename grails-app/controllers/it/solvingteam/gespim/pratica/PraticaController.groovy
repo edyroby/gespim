@@ -67,6 +67,7 @@ class PraticaController {
 			[praticaInstance: praticaInstance]
 		}
 	}
+	
 
 	def edit = {
 		def praticaInstance = Pratica.get(params.id)
@@ -124,6 +125,17 @@ class PraticaController {
 		else {
 			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'pratica.label', default: 'Pratica'), params.id])}"
 			redirect(action: "list")
+		}
+	}
+	
+	def assegnazione = {
+		def praticaInstance = Pratica.get(params.id)
+		if (!praticaInstance) {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'pratica.label', default: 'Pratica'), params.id])}"
+			redirect(action: "list")
+		}
+		else {
+			return [praticaInstance: praticaInstance]
 		}
 	}
 
