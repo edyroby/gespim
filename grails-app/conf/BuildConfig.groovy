@@ -34,5 +34,6 @@ grails.project.dependency.resolution = {
 		test ':build-test-data:1.1.1'
 		test ':fixtures:1.0.7'
 		runtime 'org.grails.plugins:jquery-datepicker:0.1'
+        compile ':joda-time:1.2'
 	}
 }

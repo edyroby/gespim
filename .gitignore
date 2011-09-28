@@ -3,3 +3,4 @@
 .settings
 stacktrace.log
 target
+*.swp

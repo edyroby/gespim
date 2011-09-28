@@ -4,16 +4,19 @@ import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.TipoRichiedente
 import it.solvingteam.gespim.tipologiche.TipologiaLegale
 
+import grails.util.GrailsUtil
+
 class BootStrap {
 	
 	def fixtureLoader
 	def grailsApplication
 
     def init = { servletContext ->
-		
-		prepareTipologiche()
-		fixtureLoader.load('pratiche')
-		fixtureLoader.load('richiedenti')
+		if (GrailsUtil.environment != 'test') {
+            prepareTipologiche()
+            fixtureLoader.load('pratiche')
+            fixtureLoader.load('richiedenti')
+        }
     }
     def destroy = {
     }
