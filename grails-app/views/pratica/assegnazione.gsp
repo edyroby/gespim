@@ -54,6 +54,23 @@
                         	<tr class="prop">
 		                        <td>&nbsp</td>
 		                    </tr>
+		                    
+		                    <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="areaCompetenzaId">Area Competenza</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: praticaInstance, field: 'tipologiaLegale', 'errors')}">
+                                    <g:each var="areaCompInstance" in="${it.solvingteam.gespim.assegnazione.AreaCompetenza.list()}">
+										<g:checkBox name="areaId" value="${areaCompInstance?.id}"/>
+										${areaCompInstance.encodeAsHTML()}<br/>
+									</g:each>
+                                </td>
+                            </tr>
+                        	<tr class="prop">
+		                        <td>&nbsp</td>
+		                    </tr>
+		                    
+		                    
                         </tbody>
                     </table>
                 </div>
