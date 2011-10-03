@@ -6,6 +6,9 @@ class Utente {
 
 	transient springSecurityService
 
+	String nome
+	String cognome
+	
 	String username
 	String password
 	boolean enabled
@@ -18,6 +21,8 @@ class Utente {
 	static constraints = {
 		username blank: false, unique: true
 		password blank: false
+		nome blank: false
+		cognome blank: false
 		area nullable:true
 	}
 
@@ -42,4 +47,9 @@ class Utente {
 	protected void encodePassword() {
 		password = springSecurityService.encodePassword(password)
 	}
+	
+	String toString(){
+		return cognome + " " + nome
+	}
+	
 }

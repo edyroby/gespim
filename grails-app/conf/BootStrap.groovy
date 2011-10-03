@@ -5,6 +5,7 @@ import it.solvingteam.gespim.tipologiche.TipoBeneficiario
 import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.TipoRichiedente
 import it.solvingteam.gespim.tipologiche.TipologiaLegale
+import it.solvingteam.gespim.tipologiche.TipoOperazione;
 
 class BootStrap {
 	
@@ -29,13 +30,16 @@ class BootStrap {
 		def userRole = new Ruolo(authority: Ruolo.ROLE_USER).save(flush: true)
 		def protocolloRole = new Ruolo(authority: Ruolo.ROLE_PROTOCOLLO).save(flush: true)
   
-		def testUser = new Utente(username: 'admin', enabled: true, password: '222')
+		def testUser = new Utente(username: 'admin', enabled: true,
+			 password: '222',nome:'admin',cognome:'adminnn')
 		testUser.save(flush: true)
 		
-		def classicUser = new Utente(username: 'user', enabled: true, password: '222')
+		def classicUser = new Utente(username: 'user', enabled: true,
+			 password: '222',nome:'user1',cognome:'user1111')
 		classicUser.save(flush: true)
 		
-		def testUser2 = new Utente(username: 'legale', enabled: true, password: '222')
+		def testUser2 = new Utente(username: 'legale', enabled: true,
+			 password: '222',nome:'legale',cognome:'legaleee')
 		def area2 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_LEGALE)
 		if(area2){
 			testUser2.area = area2
@@ -44,7 +48,8 @@ class BootStrap {
 		testUser2.save(flush: true)
 		area2.save(flush:true)
 		
-		def testUser3 = new Utente(username: 'flussi', enabled: true, password: '222')
+		def testUser3 = new Utente(username: 'flussi', enabled: true,
+			 password: '222',nome:'flussi',cognome:'flussiiiii')
 		def area3 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_FLUSSI)
 		if(area3){
 			testUser3.area = area3
@@ -107,22 +112,18 @@ class BootStrap {
 			def row = it.split(",")
 			new TipoRichiedente(codice:row[0],descrizione:row[1]).save(flush:true)
 		}
-		/*
-		grailsApplication.config.tipoRichiedenti?.each{
-			new TipoRichiedente(codice:it.key,descrizione:it.value.nome).save()
-		}
-		*/
 		//TIPO BENEFICIARIO
 		f = new File("${webdir}WEB-INF/initData/tipo_beneficiario.csv")
 		f.eachLine {
 			def row = it.split(",")
 			new TipoBeneficiario(codice:row[0],descrizione:row[1]).save(flush:true)
 		}
-		/*
-		grailsApplication.config.tipoBeneficiari?.each{
-			new TipoBeneficiario(codice:it.key,descrizione:it.value.nome).save()
+		//TIPO OPERAZIONI
+		f = new File("${webdir}WEB-INF/initData/tipo_operazione.csv")
+		f.eachLine {
+			def row = it.split(",")
+			new TipoOperazione(codice:row[0],descrizione:row[1]).save(flush:true)
 		}
-		*/
 		
 		
 	}

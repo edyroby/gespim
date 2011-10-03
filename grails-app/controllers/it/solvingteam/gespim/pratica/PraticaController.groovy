@@ -11,7 +11,7 @@ import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.TipologiaLegale;
 
 class PraticaController {
-	
+
 	def springSecurityService
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -62,7 +62,7 @@ class PraticaController {
 			[praticaInstance: praticaInstance]
 		}
 	}
-	
+
 	def showDettaglioPratica = {
 		def praticaInstance = Pratica.get(params.id)
 		if (!praticaInstance) {
@@ -72,17 +72,17 @@ class PraticaController {
 		}
 		[praticaInstance: praticaInstance,authorized:isAuthorizedForPraticaOrLegale(praticaInstance,springSecurityService.currentUser)]
 	}
-	
+
 	//controllo se la pratica risulta assegnata al mio ufficio
 	//oppure se sono admin oppure se appartengo all'area legale
 	private boolean isAuthorizedForPraticaOrLegale(praticaInstance,user){
 		def result = AssegnazionePratica.findAssegnazioneByPraticaAndUtenza(praticaInstance,user)
 		def authorized = (SpringSecurityUtils.ifAnyGranted("${Ruolo.ROLE_ADMIN},${Ruolo.ROLE_PROTOCOLLO}")
-			|| result || user.area?.izAreaLegale())?true:false
-		
+				|| result || user.area?.izAreaLegale())?true:false
+
 		authorized
 	}
-	
+
 
 	def edit = {
 		def praticaInstance = Pratica.get(params.id)
@@ -142,8 +142,10 @@ class PraticaController {
 			redirect(action: "list")
 		}
 	}
-	
+
 	def assegnazione = {
+		redirect(controller:'assegnazionePratica',action:'assegnazione',params:params)
+		/*
 		def praticaInstance = Pratica.get(params.id)
 		if (!praticaInstance) {
 			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'pratica.label', default: 'Pratica'), params.id])}"
@@ -151,41 +153,12 @@ class PraticaController {
 			return
 		}
 		def assegnazionePraticaInstance = AssegnazionePratica.findByPraticaAssegnata(praticaInstance)
-		return [praticaInstance: praticaInstance,assegnazionePraticaInstance:assegnazionePraticaInstance]
+		return [praticaInstance: praticaInstance,assegnazionePraticaInstance:assegnazionePraticaInstance,areeMap:buildAree(praticaInstance)]
+		*/
 	}
-	
-	def confermaAssegnazione = {
-		def praticaInstance = Pratica.get(params.id)
-		if (!praticaInstance) {
-			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'pratica.label', default: 'Pratica'), params.id])}"
-			redirect(action: "list")
-			return
-		}
-		def areaInstance = AreaCompetenza.get(params.areaCompetenzaId)
-		if (!areaInstance) {
-			flash.message = "Elemento non trovato."
-			redirect(action: "list")
-			return
-		}
-		
-		def assegnazionePraticaInstance = AssegnazionePratica.get(params.assegnazioneId)
-		if(assegnazionePraticaInstance){
-			assegnazionePraticaInstance.dataAssegnazione = new Date()
-			assegnazionePraticaInstance.areaCompetenza = areaInstance
-		}else{
-			assegnazionePraticaInstance = new AssegnazionePratica(
-					praticaAssegnata:praticaInstance,areaCompetenza:areaInstance,dataAssegnazione:new Date())
-		}
-		
-		if (!assegnazionePraticaInstance.save(flush: true)) {
-			flash.message = "Assegnazione non riuscita."
-			render(view:'assegnazione',model:[praticaInstance:praticaInstance])
-		}
-		flash.message = "Assegnazione effettuata con successo."
-		redirect(action: "showDettaglioPratica",id:params.id)
-		
-	}
-	
+
+
+
 
 
 	def autocompleteResult = {
