@@ -19,7 +19,7 @@ class AssegnazionePratica {
 	
 	static AssegnazionePratica findAssegnazioneByPraticaAndUtenza(pratica,user){
 		def c = AssegnazionePratica.createCriteria()
-		def result = c.list(){
+		def result = c.get(){
 			eq 'praticaAssegnata',pratica
 			areaCompetenza{
 				utenti{

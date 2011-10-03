@@ -1,8 +1,11 @@
 package it.solvingteam.gespim.pratica
 
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
+
 import grails.converters.JSON
 import it.solvingteam.gespim.assegnazione.AreaCompetenza;
 import it.solvingteam.gespim.assegnazione.AssegnazionePratica
+import it.solvingteam.gespim.security.Ruolo;
 import it.solvingteam.gespim.tipologiche.StatoPratica;
 import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.TipologiaLegale;
@@ -21,7 +24,6 @@ class PraticaController {
 	}
 
 	def results = {PraticaCommand cmd ->
-		println cmd.statoPratica
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		def listaPratiche = Pratica.cercaPratiche(cmd,params)
 		[listaPratiche:listaPratiche,listaPraticheTotal:listaPratiche.totalCount]
@@ -68,9 +70,17 @@ class PraticaController {
 			redirect(action: "results")
 			return
 		}
-		def user = springSecurityService.currentUser
-		boolean authorized = AssegnazionePratica.findAssegnazioneByPraticaAndUtenza(praticaInstance,user)
-		[praticaInstance: praticaInstance,authorized:authorized]
+		[praticaInstance: praticaInstance,authorized:isAuthorizedForPraticaOrLegale(praticaInstance,springSecurityService.currentUser)]
+	}
+	
+	//controllo se la pratica risulta assegnata al mio ufficio
+	//oppure se sono admin oppure se appartengo all'area legale
+	private boolean isAuthorizedForPraticaOrLegale(praticaInstance,user){
+		def result = AssegnazionePratica.findAssegnazioneByPraticaAndUtenza(praticaInstance,user)
+		def authorized = (SpringSecurityUtils.ifAnyGranted("${Ruolo.ROLE_ADMIN},${Ruolo.ROLE_PROTOCOLLO}")
+			|| result || user.area?.izAreaLegale())?true:false
+		
+		authorized
 	}
 	
 
@@ -158,8 +168,15 @@ class PraticaController {
 			return
 		}
 		
-		def assegnazionePraticaInstance = new AssegnazionePratica(
-			praticaAssegnata:praticaInstance,areaCompetenza:areaInstance,dataAssegnazione:new Date())
+		def assegnazionePraticaInstance = AssegnazionePratica.get(params.assegnazioneId)
+		if(assegnazionePraticaInstance){
+			assegnazionePraticaInstance.dataAssegnazione = new Date()
+			assegnazionePraticaInstance.areaCompetenza = areaInstance
+		}else{
+			assegnazionePraticaInstance = new AssegnazionePratica(
+					praticaAssegnata:praticaInstance,areaCompetenza:areaInstance,dataAssegnazione:new Date())
+		}
+		
 		if (!assegnazionePraticaInstance.save(flush: true)) {
 			flash.message = "Assegnazione non riuscita."
 			render(view:'assegnazione',model:[praticaInstance:praticaInstance])
@@ -168,6 +185,7 @@ class PraticaController {
 		redirect(action: "showDettaglioPratica",id:params.id)
 		
 	}
+	
 
 
 	def autocompleteResult = {

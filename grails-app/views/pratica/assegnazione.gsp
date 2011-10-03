@@ -25,6 +25,7 @@
             </g:hasErrors>
             <g:form method="post" >
                 <g:hiddenField name="id" value="${praticaInstance?.id}" />
+                <g:hiddenField name="assegnazioneId" value="${assegnazionePraticaInstance?.id}" />
                 <g:hiddenField name="version" value="${praticaInstance?.version}" />
                 <div class="dialog">
                     <table>

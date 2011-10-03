@@ -25,14 +25,18 @@ class BootStrap {
     }
 	
 	private void prepareUserRole(){
-		def adminRole = new Ruolo(authority: 'ROLE_ADMIN').save(flush: true)
-		def userRole = new Ruolo(authority: 'ROLE_USER').save(flush: true)
+		def adminRole = new Ruolo(authority: Ruolo.ROLE_ADMIN).save(flush: true)
+		def userRole = new Ruolo(authority: Ruolo.ROLE_USER).save(flush: true)
+		def protocolloRole = new Ruolo(authority: Ruolo.ROLE_PROTOCOLLO).save(flush: true)
   
-		def testUser = new Utente(username: 'me', enabled: true, password: '222')
+		def testUser = new Utente(username: 'admin', enabled: true, password: '222')
 		testUser.save(flush: true)
 		
+		def classicUser = new Utente(username: 'user', enabled: true, password: '222')
+		classicUser.save(flush: true)
+		
 		def testUser2 = new Utente(username: 'legale', enabled: true, password: '222')
-		def area2 = AreaCompetenza.findByCodice('AC001')
+		def area2 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_LEGALE)
 		if(area2){
 			testUser2.area = area2
 			area2.addToUtenti(testUser2)
@@ -41,7 +45,7 @@ class BootStrap {
 		area2.save(flush:true)
 		
 		def testUser3 = new Utente(username: 'flussi', enabled: true, password: '222')
-		def area3 = AreaCompetenza.findByCodice('AC002')
+		def area3 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_FLUSSI)
 		if(area3){
 			testUser3.area = area3
 			
@@ -50,13 +54,15 @@ class BootStrap {
 		area3.save(flush:true)
   
 		UtenteRuolo.create testUser, adminRole, true
+		UtenteRuolo.create testUser, protocolloRole, true
+		UtenteRuolo.create classicUser, userRole, true
 		UtenteRuolo.create testUser2, userRole, true
 		UtenteRuolo.create testUser3, userRole, true
 		
 		RequestMap.findByUrlAndConfigAttribute('/**', 'IS_AUTHENTICATED_FULLY')?:new RequestMap(url:'/**', configAttribute:'IS_AUTHENTICATED_FULLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/login/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/login/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/logout/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/logout/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
-		RequestMap.findByUrlAndConfigAttribute('/img/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/img/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
+		RequestMap.findByUrlAndConfigAttribute('/images/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/images/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/css/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/css/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/js/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/js/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/plugins/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/plugins/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
