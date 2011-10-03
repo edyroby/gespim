@@ -16,6 +16,7 @@ class BootStrap {
             prepareTipologiche()
             fixtureLoader.load('pratiche')
             fixtureLoader.load('richiedenti')
+            fixtureLoader.load('appuntamenti_dev')
         }
     }
     def destroy = {

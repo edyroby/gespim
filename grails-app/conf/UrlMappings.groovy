@@ -7,6 +7,7 @@ class UrlMappings {
 			}
 		}
 
+        "/appuntamenti"(controller:"calendario",action:"calendario")
 		"/"(controller:"pratica",action:"search")
 		"500"(view:'/error')
 	}
