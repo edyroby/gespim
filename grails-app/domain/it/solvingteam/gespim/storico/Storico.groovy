@@ -6,10 +6,12 @@ class Storico {
 	
 	TipoOperazione tipoOperazione
 	Date dataOperazione
+	//area/ufficio dell'utente che esegue l'operazione
+	String areaOperatore
+	//l'utente che esegue l'operazione
+	String utenteOperatore
 	
 	//ASSEGNAZIONE
-	String areaAssegnante
-	String utenteAssegnante
 	String areaAssegnataria
 	boolean presaInCarico
 	Date dataPresaInCarico
@@ -20,8 +22,8 @@ class Storico {
     static constraints = {
 		tipoOperazione(nullable:true)
 		dataOperazione(nullable:true)
-		areaAssegnante(nullable:true)
-		utenteAssegnante(nullable:true)
+		areaOperatore(nullable:true)
+		utenteOperatore(nullable:true)
 		areaAssegnataria(nullable:true)
 		dataPresaInCarico(nullable:true)
 		utentePresaInCarico(nullable:true)
