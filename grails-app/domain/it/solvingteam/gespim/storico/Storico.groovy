@@ -5,6 +5,9 @@ import it.solvingteam.gespim.tipologiche.TipoOperazione;
 class Storico {
 	
 	TipoOperazione tipoOperazione
+	String numeroPratica
+	String codiceIstanza
+	String codiceQuestura
 	Date dataOperazione
 	//area/ufficio dell'utente che esegue l'operazione
 	String areaOperatore
@@ -20,6 +23,9 @@ class Storico {
 	
 
     static constraints = {
+		numeroPratica(nullable:true)
+		codiceIstanza(nullable:true)
+		codiceQuestura(nullable:true)
 		tipoOperazione(nullable:true)
 		dataOperazione(nullable:true)
 		areaOperatore(nullable:true)

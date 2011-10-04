@@ -55,6 +55,15 @@
                     <table>
                         <tbody>
                         
+                        	<tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="assegnateAdUfficio">Solo Area di Appartenenza</label>
+                                </td>
+                                <td valign="top" class="value">
+                                    <g:checkBox name="assegnateAdUfficio"  />
+                                </td>
+                            </tr>
+                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="numeroPratica"><g:message code="praticaFlussiStagionali.numeroPratica.label" default="Numero Pratica" /></label>

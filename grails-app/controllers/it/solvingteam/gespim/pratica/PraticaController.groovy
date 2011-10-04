@@ -9,6 +9,7 @@ import it.solvingteam.gespim.security.Ruolo;
 import it.solvingteam.gespim.tipologiche.StatoPratica;
 import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.TipologiaLegale;
+import it.solvingteam.gespim.storico.Storico;
 
 class PraticaController {
 
@@ -145,21 +146,24 @@ class PraticaController {
 
 	def assegnazione = {
 		redirect(controller:'assegnazionePratica',action:'assegnazione',params:params)
-		/*
+	}
+
+	def storicoTab = {
 		def praticaInstance = Pratica.get(params.id)
 		if (!praticaInstance) {
 			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'pratica.label', default: 'Pratica'), params.id])}"
-			redirect(action: "list")
+			redirect(action: "search")
 			return
 		}
-		def assegnazionePraticaInstance = AssegnazionePratica.findByPraticaAssegnata(praticaInstance)
-		return [praticaInstance: praticaInstance,assegnazionePraticaInstance:assegnazionePraticaInstance,areeMap:buildAree(praticaInstance)]
-		*/
+		
+		params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
+		def c = Storico.createCriteria()
+		def storicoInstanceList = c.list(params){
+			eq("numeroPratica",praticaInstance.numeroPratica)
+		}
+		
+		[praticaInstance: praticaInstance,storicoInstanceList:storicoInstanceList,storicoInstanceTotal:storicoInstanceList.totalCount]
 	}
-
-
-
-
 
 	def autocompleteResult = {
 		String term = params.q

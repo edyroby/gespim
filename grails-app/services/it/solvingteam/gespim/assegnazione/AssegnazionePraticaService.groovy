@@ -14,7 +14,6 @@ class AssegnazionePraticaService {
 		if (praticaInstance) {
 			
 			def user = springSecurityService.currentUser
-
 			def listaAreeSelezionate = AreaCompetenza.getAll(params.areaId?.collect{ it as long })
 			def listaAssegnazioniDaRimuovere = []
 			//println listaAreeSelezionate
@@ -27,18 +26,16 @@ class AssegnazionePraticaService {
 					listaAssegnazioniDaRimuovere << assegnazione
 				}
 			}
-			
 			//rimuovo quelle 'sporche'
 			listaAssegnazioniDaRimuovere.each{
+				def storicoInstance = registraRimozioneAssegnazione(it,user)
 				praticaInstance.removeFromAssegnazioni(it)
 				it.delete()
-				def storicoInstance = registraRimozioneAssegnazione(it,user)
 				if (!storicoInstance.save()) {
 					throw new AssegnazionePraticaException(message: "Registrazione Storico rimozione assegnazione ${it} non riuscita",
 						praticaInstance:praticaInstance)
 				}
 			}
-			
 			//println ".....filtrate: "+listaAreeSelezionate
 			//ora si inseriscono le nuove assegnazioni per ogni area selezionata
 			listaAreeSelezionate?.each{
@@ -60,6 +57,9 @@ class AssegnazionePraticaService {
 	
 	private Storico registraAssegnazione(assegnazionePraticaInstance,user){
 		def storicoInstance = new Storico()
+		storicoInstance.numeroPratica = assegnazionePraticaInstance.praticaAssegnata.numeroPratica
+		storicoInstance.codiceIstanza = assegnazionePraticaInstance.praticaAssegnata.codiceIstanza
+		storicoInstance.codiceQuestura = assegnazionePraticaInstance.praticaAssegnata.codiceQuestura
 		storicoInstance.tipoOperazione = TipoOperazione.findByCodice(TipoOperazione.COD_ASSEGNAZIONE)
 		storicoInstance.dataOperazione = new Date()
 		storicoInstance.areaOperatore = user?.area?.toString()
@@ -71,12 +71,14 @@ class AssegnazionePraticaService {
 	
 	private Storico registraRimozioneAssegnazione(assegnazionePraticaInstance,user){
 		def storicoInstance = new Storico()
+		storicoInstance.numeroPratica = assegnazionePraticaInstance.praticaAssegnata.numeroPratica
+		storicoInstance.codiceIstanza = assegnazionePraticaInstance.praticaAssegnata.codiceIstanza
+		storicoInstance.codiceQuestura = assegnazionePraticaInstance.praticaAssegnata.codiceQuestura
 		storicoInstance.tipoOperazione = TipoOperazione.findByCodice(TipoOperazione.COD_RIMOZIONE_ASSEGNAZIONE)
 		storicoInstance.dataOperazione = new Date()
 		storicoInstance.areaOperatore = user?.area?.toString()
 		storicoInstance.utenteOperatore = user.toString()
 		storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
-		
 		storicoInstance
 	}
 	

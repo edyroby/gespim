@@ -82,5 +82,8 @@
                 <g:paginate total="${listaPraticheTotal}" params="${params }"/>
             </div>
         </div>
+        <div class="buttons">
+                <g:actionSubmit id="mysubmit"  action="" value="Prendi in Carico" />
+        </div>
     </body>
 </html>

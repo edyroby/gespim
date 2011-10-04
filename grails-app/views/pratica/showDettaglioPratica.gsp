@@ -6,14 +6,13 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'pratica.label', default: 'Pratica')}" />
         <title>Dettaglio Pratica</title>
-        
          <g:javascript src="jQuery/jquery-1.5.1.min.js" />
 	    <g:javascript src="jQuery/jquery-ui-1.8.12.custom.min.js" />
 	    <link rel="stylesheet" media="all" type="text/css"  href="${resource(dir:'css/redmond', file:'jquery-ui-1.8.13.custom.css')}" />
         
         <script>
 			$(function() {
-				$( "#tabs" ).tabs();
+				$( "#tabs" ).tabs({ajaxOptions:{cache:false},cache:false});
 			});
 		</script>
         
@@ -27,7 +26,7 @@
             --%>
         </div>
         <div class="body">
-            <h1>Dettaglio Pratica</h1>
+            <h1>Dettaglio Pratica Nr: ${praticaInstance.numeroPratica }</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -37,7 +36,7 @@
 	<ul>
 		<li><a href="#tabs-datore">Datore</a></li>
 		<li><a href="#tabs-lavoratore">Lavoratore</a></li>
-		<li><a href="#tabs-storico">Storico Pratica</a></li>
+		<li><g:link  action="storicoTab" id="${praticaInstance.id}" title="Storico">Storico</g:link></li>
 		<li><a href="#tabs-protocollo">Protocollo</a></li>
 	</ul>
 	<div id="tabs-datore">
@@ -144,19 +143,6 @@
                     </tr>
                 </tbody>
             </table>
-	</div>
-	<div id="tabs-storico">
-		 <table>
-                <tbody>
-	               <tr class="prop">
-                        <td>&nbsp</td>
-                    </tr>
-                   
-                    <tr class="prop">
-                        <td>&nbsp</td>
-                    </tr>
-                </tbody>
-            </table>	
 	</div>
 	<div id="tabs-protocollo">
 		<p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>

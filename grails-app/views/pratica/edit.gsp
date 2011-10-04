@@ -114,6 +114,7 @@
                 </div>
                 <div class="buttons">
                 	<g:actionSubmit id="mysubmit"  action="update" value="Conferma" />
+                    <g:actionSubmit id="mysubmit"  action="showDettaglioPratica" value="Indietro" />
                     <%-- 
                     <span class="button">
                     	<g:actionSubmit class="save" action="update" value="Modifica" />
