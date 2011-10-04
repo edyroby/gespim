@@ -32,6 +32,11 @@ class BootStrap {
   
 		def testUser = new Utente(username: 'admin', enabled: true,
 			 password: '222',nome:'admin',cognome:'adminnn')
+		def area2 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_LEGALE)
+		if(area2){
+			testUser.area = area2
+			area2.addToUtenti(testUser)
+		}
 		testUser.save(flush: true)
 		
 		def classicUser = new Utente(username: 'user', enabled: true,
@@ -40,7 +45,6 @@ class BootStrap {
 		
 		def testUser2 = new Utente(username: 'legale', enabled: true,
 			 password: '222',nome:'legale',cognome:'legaleee')
-		def area2 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_LEGALE)
 		if(area2){
 			testUser2.area = area2
 			area2.addToUtenti(testUser2)

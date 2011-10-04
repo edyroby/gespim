@@ -61,7 +61,7 @@ class AssegnazionePraticaService {
 		storicoInstance.codiceIstanza = assegnazionePraticaInstance.praticaAssegnata.codiceIstanza
 		storicoInstance.codiceQuestura = assegnazionePraticaInstance.praticaAssegnata.codiceQuestura
 		storicoInstance.tipoOperazione = TipoOperazione.findByCodice(TipoOperazione.COD_ASSEGNAZIONE)
-		storicoInstance.dataOperazione = new Date()
+		storicoInstance.dataOperazione = assegnazionePraticaInstance.dataAssegnazione
 		storicoInstance.areaOperatore = user?.area?.toString()
 		storicoInstance.utenteOperatore = user.toString()
 		storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
@@ -75,11 +75,63 @@ class AssegnazionePraticaService {
 		storicoInstance.codiceIstanza = assegnazionePraticaInstance.praticaAssegnata.codiceIstanza
 		storicoInstance.codiceQuestura = assegnazionePraticaInstance.praticaAssegnata.codiceQuestura
 		storicoInstance.tipoOperazione = TipoOperazione.findByCodice(TipoOperazione.COD_RIMOZIONE_ASSEGNAZIONE)
-		storicoInstance.dataOperazione = new Date()
+		storicoInstance.dataOperazione = assegnazionePraticaInstance.dataAssegnazione
 		storicoInstance.areaOperatore = user?.area?.toString()
 		storicoInstance.utenteOperatore = user.toString()
 		storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
 		storicoInstance
+	}
+	
+	//PRESA IN CARICA MULTIPLA DELLE ASSEGNAZIONI
+	void presaInCaricaMultipla(params){
+		
+		def listaPratiche = []
+		if(params['praticaId']?.size() == 1 ){
+			listaPratiche << Pratica.get(params['praticaId'] as long)
+		}else{
+			listaPratiche += Pratica.getAll(params['praticaId']?.toList()?.collect{it as long})
+		}
+		println "....................lista pratiche: "+listaPratiche
+		def c = AssegnazionePratica.createCriteria()
+		def results = c.list(){
+			'in'("praticaAssegnata",listaPratiche)
+			eq("presaInCarico", false)
+			eq("areaCompetenza",springSecurityService.currentUser.area)
+		}
+		
+		def user = springSecurityService.currentUser
+
+		results?.each{ assegnazionePraticaInstance ->
+			assegnazionePraticaInstance.presaInCarico = true
+			assegnazionePraticaInstance.dataPresaInCarico = new Date()
+			assegnazionePraticaInstance.utentePresaInCarico = springSecurityService.currentUser
+			def storicoInstance = registraPresaInCarico(assegnazionePraticaInstance,user)
+			if (!assegnazionePraticaInstance.save() ||
+				!storicoInstance?.save()) {
+				throw new AssegnazionePraticaException(message: "Presa in carico a ${it} non riuscita",
+					praticaInstance:praticaInstance)
+			}
+		}
+		
+	}
+	private Storico registraPresaInCarico(assegnazionePraticaInstance,user){
+		def c = Storico.createCriteria()
+		def storicoInstance = c.get{
+			eq 'tipoOperazione',TipoOperazione.findByCodice(TipoOperazione.COD_ASSEGNAZIONE)
+			eq 'numeroPratica',assegnazionePraticaInstance.praticaAssegnata.numeroPratica
+			eq 'codiceIstanza',assegnazionePraticaInstance.praticaAssegnata.codiceIstanza
+			eq 'codiceQuestura',assegnazionePraticaInstance.praticaAssegnata.codiceQuestura
+			eq 'dataOperazione',assegnazionePraticaInstance.dataAssegnazione
+			eq 'presaInCarico',false
+			isNull('dataPresaInCarico')
+		}
+		if(storicoInstance){
+			storicoInstance.presaInCarico = true
+			storicoInstance.dataPresaInCarico = new Date()
+			storicoInstance.utentePresaInCarico = user
+			return storicoInstance
+		}
+		return null
 	}
 	
 	

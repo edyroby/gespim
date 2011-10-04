@@ -55,4 +55,16 @@ class AssegnazionePraticaController {
 	def backToDettaglioPratica = {
 		redirect(controller:'pratica',action: "showDettaglioPratica",id:params.id)
 	}
+	
+	def presaInCaricoMultipla = {
+		
+		if(!params['praticaId']){
+			flash.error = "Nessuna voce selezionata"
+			redirect(controller:'pratica',action: "results",params:params)
+			return
+		}
+		assegnazionePraticaService.presaInCaricaMultipla(params)
+		
+	}
+	
 }

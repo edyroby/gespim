@@ -26,10 +26,10 @@ class PraticaController {
 
 	def results = {PraticaCommand cmd ->
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		def listaPratiche = Pratica.cercaPratiche(cmd,params)
+		def user = springSecurityService.currentUser
+		def listaPratiche = Pratica.cercaPratiche(cmd,user,params)
 		[listaPratiche:listaPratiche,listaPraticheTotal:listaPratiche.totalCount]
 	}
-
 
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -164,6 +164,10 @@ class PraticaController {
 		
 		[praticaInstance: praticaInstance,storicoInstanceList:storicoInstanceList,storicoInstanceTotal:storicoInstanceList.totalCount]
 	}
+	
+	def presaInCaricoMultipla = {
+		redirect(controller:'assegnazionePratica',action:'presaInCaricoMultipla',params:params)
+	}
 
 	def autocompleteResult = {
 		String term = params.q
@@ -193,6 +197,8 @@ class PraticaCommand{
 	String nomeRichiedente
 	String cognomeRichiedente
 	Date dataNascitaRichiedente
+	
+	boolean assegnateAdUfficio
 
 	Set beneficiari = []as Set
 

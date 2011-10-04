@@ -36,10 +36,16 @@ class Pratica {
 		iter(nullable:true)
 	}
 	
-	def static cercaPratiche(cmd,params){
+	def static cercaPratiche(cmd,user,params){
 		def c = Pratica.createCriteria()
 
 		def results = c.list(params){
+			
+			if(cmd.assegnateAdUfficio){
+				assegnazioni{
+					eq 'areaCompetenza',user.area
+				}
+			}
 
 			if(cmd.numeroPratica){
 				ilike 'numeroPratica', "%${cmd.numeroPratica}%"
@@ -75,7 +81,6 @@ class Pratica {
 				}
 			}
 			if(cmd.beneficiari){
-				println "...........beneficiari:     "+cmd.beneficiari
 				beneficiari{
 					'in'("id",cmd.beneficiari?.collect{it.id})
 				}

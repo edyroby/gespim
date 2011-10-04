@@ -29,9 +29,9 @@
 	             });
 		     });
 	     </script>
-	    
-	    
-	    <g:jqDatepickerLocale lang="it" />
+		
+
+<g:jqDatepickerLocale lang="it" />
     </head>
     <body>
         <div class="nav">
