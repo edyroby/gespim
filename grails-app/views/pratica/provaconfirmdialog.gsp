@@ -28,8 +28,9 @@
 
 				$('#mysubmit').click(function() {
 					$dialog.dialog('open');
+					
 					// prevent the default action, e.g., following a link
-					return false;
+					return result;
 				});
 				
 			});

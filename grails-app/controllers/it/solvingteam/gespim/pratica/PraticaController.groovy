@@ -165,8 +165,12 @@ class PraticaController {
 		[praticaInstance: praticaInstance,storicoInstanceList:storicoInstanceList,storicoInstanceTotal:storicoInstanceList.totalCount]
 	}
 	
-	def presaInCaricoMultipla = {
-		redirect(controller:'assegnazionePratica',action:'presaInCaricoMultipla',params:params)
+	def presaInCarico = {
+		redirect(controller:'assegnazionePratica',action:'presaInCarico',params:params)
+	}
+	
+	def presaInCaricoMassiva = {
+		redirect(controller:'assegnazionePratica',action:'presaInCaricoMassiva',params:params)
 	}
 
 	def autocompleteResult = {

@@ -30,7 +30,9 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            
+            <g:if test="${flash.error}">
+            <div class="errors">${flash.error}</div>
+            </g:if>
             
  <div id="tabs">
 	<ul>
@@ -156,16 +158,11 @@
 	                    <g:hiddenField name="id" value="${praticaInstance?.id}" />
 	                    <g:actionSubmit id="mysubmit" action="edit" value="Modifica" />
 	                    <g:actionSubmit id="mysubmit" action="assegnazione" value="Assegnazione" />
+	                    <g:actionSubmit id="mysubmit" action="presaInCarico" value="Presa in carico" onclick="return confirm('Confermare l\\'operazione di presa in carico?')"/>
 	                    <g:actionSubmit id="mysubmit" action="xxx" value="Convocazione" />
 	                    <g:actionSubmit id="mysubmit" action="xxx" value="Emetti Atto" />
 	                    <g:actionSubmit id="mysubmit" action="xxx" value="Evidenza" />
 	                    <g:actionSubmit id="mysubmit" action="xxx" value="Stampa" />
-	                    <%-- 
-	                    <span class="button">
-	                    	<g:actionSubmit class="edit" action="edit" value="Modifica" />
-	                    </span>
-	                    <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
-	                    --%>
 	                </g:form>
 	            </div>
             </g:if>

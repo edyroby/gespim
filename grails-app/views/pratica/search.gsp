@@ -43,7 +43,10 @@
         <div class="body">
             <h1>Ricerca Pratica</h1>
             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
+            	<div class="message">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.error}">
+            	<div class="errors">${flash.error}</div>
             </g:if>
             <g:hasErrors bean="${praticaFlussiStagionaliInstance}">
             <div class="errors">

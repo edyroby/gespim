@@ -23,10 +23,13 @@ class AssegnazionePraticaService {
 				if(listaAreeSelezionate?.contains(assegnazione.areaCompetenza)){
 					listaAreeSelezionate -= assegnazione.areaCompetenza
 				}else{
-					listaAssegnazioniDaRimuovere << assegnazione
+					//posso rimuovere solo se l'assegnazione non è presa in carico
+					if(!assegnazione.presaInCarico){
+						listaAssegnazioniDaRimuovere << assegnazione
+					}
 				}
 			}
-			//rimuovo quelle 'sporche'
+			//rimuovo quelle 'sporche' ma non quelle prese in carico
 			listaAssegnazioniDaRimuovere.each{
 				def storicoInstance = registraRimozioneAssegnazione(it,user)
 				praticaInstance.removeFromAssegnazioni(it)
@@ -83,7 +86,7 @@ class AssegnazionePraticaService {
 	}
 	
 	//PRESA IN CARICA MULTIPLA DELLE ASSEGNAZIONI
-	void presaInCaricaMultipla(params){
+	void presaInCaricoMassiva(params){
 		
 		def listaPratiche = []
 		if(params['praticaId']?.size() == 1 ){
@@ -96,11 +99,12 @@ class AssegnazionePraticaService {
 		def results = c.list(){
 			'in'("praticaAssegnata",listaPratiche)
 			eq("presaInCarico", false)
-			eq("areaCompetenza",springSecurityService.currentUser.area)
+			//eq("areaCompetenza",springSecurityService.currentUser.area)
 		}
+		println "....................lista pratiche: "+results
 		
 		def user = springSecurityService.currentUser
-
+/*
 		results?.each{ assegnazionePraticaInstance ->
 			assegnazionePraticaInstance.presaInCarico = true
 			assegnazionePraticaInstance.dataPresaInCarico = new Date()
@@ -111,27 +115,37 @@ class AssegnazionePraticaService {
 				throw new AssegnazionePraticaException(message: "Presa in carico a ${it} non riuscita",
 					praticaInstance:praticaInstance)
 			}
+				throw new AssegnazionePraticaException(message: "Presa in carico a ${it} non riuscita",
+					praticaInstance:praticaInstance)
 		}
-		
+		*/
 	}
+	void presaInCaricoSingola(assegnazionePraticaInstance,user){
+		assegnazionePraticaInstance.presaInCarico = true
+		assegnazionePraticaInstance.dataPresaInCarico = new Date()
+		assegnazionePraticaInstance.utentePresaInCarico = user
+		def storicoInstance = registraPresaInCarico(assegnazionePraticaInstance,user)
+		if (!assegnazionePraticaInstance.save() ||
+			!storicoInstance?.save()) {
+			throw new AssegnazionePraticaException(message: "Presa in carico non riuscita",
+				praticaInstance:assegnazionePraticaInstance.praticaAssegnata)
+		}
+	}
+	
 	private Storico registraPresaInCarico(assegnazionePraticaInstance,user){
-		def c = Storico.createCriteria()
-		def storicoInstance = c.get{
-			eq 'tipoOperazione',TipoOperazione.findByCodice(TipoOperazione.COD_ASSEGNAZIONE)
-			eq 'numeroPratica',assegnazionePraticaInstance.praticaAssegnata.numeroPratica
-			eq 'codiceIstanza',assegnazionePraticaInstance.praticaAssegnata.codiceIstanza
-			eq 'codiceQuestura',assegnazionePraticaInstance.praticaAssegnata.codiceQuestura
-			eq 'dataOperazione',assegnazionePraticaInstance.dataAssegnazione
-			eq 'presaInCarico',false
-			isNull('dataPresaInCarico')
-		}
-		if(storicoInstance){
-			storicoInstance.presaInCarico = true
-			storicoInstance.dataPresaInCarico = new Date()
-			storicoInstance.utentePresaInCarico = user
-			return storicoInstance
-		}
-		return null
+		def storicoInstance = new Storico()
+		storicoInstance.numeroPratica = assegnazionePraticaInstance.praticaAssegnata.numeroPratica
+		storicoInstance.codiceIstanza = assegnazionePraticaInstance.praticaAssegnata.codiceIstanza
+		storicoInstance.codiceQuestura = assegnazionePraticaInstance.praticaAssegnata.codiceQuestura
+		storicoInstance.tipoOperazione = TipoOperazione.findByCodice(TipoOperazione.COD_PRESA_IN_CARICO)
+		storicoInstance.dataOperazione = new Date()
+		storicoInstance.areaOperatore = user?.area?.toString()
+		storicoInstance.utenteOperatore = user.toString()
+		storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
+		storicoInstance.presaInCarico = true
+		storicoInstance.dataPresaInCarico = new Date()
+		storicoInstance.utentePresaInCarico = user.toString()
+		storicoInstance
 	}
 	
 	

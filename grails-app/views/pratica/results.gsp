@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class="buttons">
-                <g:actionSubmit id="mysubmit"  action="presaInCaricoMultipla" value="Prendi in Carico" onclick="return check()"/>
+                <g:actionSubmit id="mysubmit"  action="presaInCaricoMassiva" value="Prendi in Carico" onclick="return check()"/>
         </div>
         </g:form>
     </body>

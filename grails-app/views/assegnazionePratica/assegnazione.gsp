@@ -63,7 +63,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: praticaInstance, field: 'tipologiaLegale', 'errors')}">
                                     <g:each var="areaCompInstance" in="${areeMap}">
-										<g:checkBox name="areaId" value="${areaCompInstance.key.id }" checked="${areaCompInstance.value}" />
+										<g:checkBox name="areaId" value="${areaCompInstance.key.id }" checked="${areaCompInstance.value.checked}" disabled="${areaCompInstance.value.presaInCarico }"/>
 										${areaCompInstance.key?.encodeAsHTML()}<br/>
 									</g:each>
                                 </td>
