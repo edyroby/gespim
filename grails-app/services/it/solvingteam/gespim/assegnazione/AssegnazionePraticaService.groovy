@@ -5,14 +5,14 @@ import it.solvingteam.gespim.storico.Storico;
 import it.solvingteam.gespim.tipologiche.TipoOperazione;
 
 class AssegnazionePraticaService {
-	
+
 	def springSecurityService
 
 	static transactional = true
 
 	Pratica processAssegnazioni(praticaInstance,params) {
 		if (praticaInstance) {
-			
+
 			def user = springSecurityService.currentUser
 			def listaAreeSelezionate = AreaCompetenza.getAll(params.areaId?.collect{ it as long })
 			def listaAssegnazioniDaRimuovere = []
@@ -36,7 +36,7 @@ class AssegnazionePraticaService {
 				it.delete()
 				if (!storicoInstance.save()) {
 					throw new AssegnazionePraticaException(message: "Registrazione Storico rimozione assegnazione ${it} non riuscita",
-						praticaInstance:praticaInstance)
+					praticaInstance:praticaInstance)
 				}
 			}
 			//println ".....filtrate: "+listaAreeSelezionate
@@ -48,16 +48,16 @@ class AssegnazionePraticaService {
 				//praticaInstance.addToAssegnazioni(assegnazionePraticaInstance)
 				def storicoInstance = registraAssegnazione(assegnazionePraticaInstance,user)
 				if (!assegnazionePraticaInstance.save() ||
-					!storicoInstance.save()) {
+				!storicoInstance.save()) {
 					throw new AssegnazionePraticaException(message: "Assegnazione a ${it} non riuscita",
-						praticaInstance:praticaInstance)
+					praticaInstance:praticaInstance)
 				}
 			}
 			return praticaInstance
 		}
 		throw new AssegnazionePraticaException(message: "Pratica inesistente.")
 	}
-	
+
 	private Storico registraAssegnazione(assegnazionePraticaInstance,user){
 		def storicoInstance = new Storico()
 		storicoInstance.numeroPratica = assegnazionePraticaInstance.praticaAssegnata.numeroPratica
@@ -68,10 +68,10 @@ class AssegnazionePraticaService {
 		storicoInstance.areaOperatore = user?.area?.toString()
 		storicoInstance.utenteOperatore = user.toString()
 		storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
-		
+
 		storicoInstance
 	}
-	
+
 	private Storico registraRimozioneAssegnazione(assegnazionePraticaInstance,user){
 		def storicoInstance = new Storico()
 		storicoInstance.numeroPratica = assegnazionePraticaInstance.praticaAssegnata.numeroPratica
@@ -84,41 +84,25 @@ class AssegnazionePraticaService {
 		storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
 		storicoInstance
 	}
-	
+
 	//PRESA IN CARICA MULTIPLA DELLE ASSEGNAZIONI
-	void presaInCaricoMassiva(params){
-		
-		def listaPratiche = []
-		if(params['praticaId']?.size() == 1 ){
-			listaPratiche << Pratica.get(params['praticaId'] as long)
-		}else{
-			listaPratiche += Pratica.getAll(params['praticaId']?.toList()?.collect{it as long})
-		}
-		println "....................lista pratiche: "+listaPratiche
-		def c = AssegnazionePratica.createCriteria()
-		def results = c.list(){
-			'in'("praticaAssegnata",listaPratiche)
-			eq("presaInCarico", false)
-			//eq("areaCompetenza",springSecurityService.currentUser.area)
-		}
-		println "....................lista pratiche: "+results
-		
+	void presaInCaricoMassiva(listaAssegnazioni){
+
+
 		def user = springSecurityService.currentUser
-/*
-		results?.each{ assegnazionePraticaInstance ->
-			assegnazionePraticaInstance.presaInCarico = true
-			assegnazionePraticaInstance.dataPresaInCarico = new Date()
-			assegnazionePraticaInstance.utentePresaInCarico = springSecurityService.currentUser
-			def storicoInstance = registraPresaInCarico(assegnazionePraticaInstance,user)
-			if (!assegnazionePraticaInstance.save() ||
+		listaAssegnazioni?.each{ assegnazionePraticaInstance ->
+			if(!assegnazionePraticaInstance.presaInCarico){
+				assegnazionePraticaInstance.presaInCarico = true
+				assegnazionePraticaInstance.dataPresaInCarico = new Date()
+				assegnazionePraticaInstance.utentePresaInCarico = user
+				def storicoInstance = registraPresaInCarico(assegnazionePraticaInstance,user)
+				if (!assegnazionePraticaInstance.save() ||
 				!storicoInstance?.save()) {
-				throw new AssegnazionePraticaException(message: "Presa in carico a ${it} non riuscita",
-					praticaInstance:praticaInstance)
+					throw new AssegnazionePraticaException(message: "Presa in carico a non riuscita",
+					praticaInstance:assegnazionePraticaInstance.praticaAssegnata)
+				}
 			}
-				throw new AssegnazionePraticaException(message: "Presa in carico a ${it} non riuscita",
-					praticaInstance:praticaInstance)
 		}
-		*/
 	}
 	void presaInCaricoSingola(assegnazionePraticaInstance,user){
 		assegnazionePraticaInstance.presaInCarico = true
@@ -126,12 +110,12 @@ class AssegnazionePraticaService {
 		assegnazionePraticaInstance.utentePresaInCarico = user
 		def storicoInstance = registraPresaInCarico(assegnazionePraticaInstance,user)
 		if (!assegnazionePraticaInstance.save() ||
-			!storicoInstance?.save()) {
+		!storicoInstance?.save()) {
 			throw new AssegnazionePraticaException(message: "Presa in carico non riuscita",
-				praticaInstance:assegnazionePraticaInstance.praticaAssegnata)
+			praticaInstance:assegnazionePraticaInstance.praticaAssegnata)
 		}
 	}
-	
+
 	private Storico registraPresaInCarico(assegnazionePraticaInstance,user){
 		def storicoInstance = new Storico()
 		storicoInstance.numeroPratica = assegnazionePraticaInstance.praticaAssegnata.numeroPratica
@@ -147,8 +131,8 @@ class AssegnazionePraticaService {
 		storicoInstance.utentePresaInCarico = user.toString()
 		storicoInstance
 	}
-	
-	
+
+
 }
 class AssegnazionePraticaException extends RuntimeException {
 	String message

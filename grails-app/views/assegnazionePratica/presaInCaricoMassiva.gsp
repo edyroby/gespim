@@ -12,23 +12,29 @@
         </div>
         <div class="body">
             <h1>Presa in carico massiva</h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
             <g:if test="${flash.error}">
             <div class="errors">${flash.error}</div>
             </g:if>
-            <div class="message">
-				Verranno prese in carico le seguenti pratiche, assegnate all'ufficio dell'utenza attualmente in uso.
-			</div>
+            <g:elseif test="${flash.message}">
+            <div class="message">${flash.message}</div>
+            </g:elseif>
+            <g:if test="${assegnazionePraticaInstanceList}">
+	            <div class="message">
+					Verranno prese in carico le seguenti pratiche, assegnate all'ufficio dell'utenza attualmente in uso.
+				</div>
+			</g:if>
+			<g:else>
+				<div class="message">
+					Non sono state trovate pratiche da prendere in carico.
+				</div>
+			</g:else>
             <div class="list">
                 <table>
                     <thead>
                         <tr>
                         
                             <th>Numero Pratica</th>
-                            <th>Richiedente</th>
-                            <th>Lavoratore/Straniero</th>
+                            <th>Data Assegnazione</th>
                         <%-- 
                             <g:sortableColumn property="codiceIstanza" title="${message(code: 'praticaArticolo27.codiceIstanza.label', default: 'Codice Istanza')}" />
                         
@@ -36,27 +42,26 @@
                         --%>
                             <th>Stato Pratica</th>
                         
-                            <th>Tipologia Legale</th>
                             <th>Tipo Pratica</th>
                         
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${assegnazionePraticaInstanceList}" status="i" var="assegnazionePraticaInstance">
+						<g:hiddenField name="_assegnaz_${i}" value="${assegnazionePraticaInstance.id}" />
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
-                            <td>${fieldValue(bean: assegnazionePraticaInstance.praticaAssegnata, field: "numeroPratica")}</td>
-                            <td>${assegnazionePraticaInstance.praticaAssegnata.richiedente}</td>
-                            <td>${assegnazionePraticaInstance.praticaAssegnata.beneficiari*.cognome}</td>
+                            <td>${assegnazionePraticaInstance.praticaAssegnata?.numeroPratica}</td>
+                            <td>
+                            	<g:formatDate format="dd/MM/yyyy" date="${assegnazionePraticaInstance.dataAssegnazione}"/>
+                            </td>
                         <%-- 
                             <td>${fieldValue(bean: assegnazionePraticaInstance, field: "codiceIstanza")}</td>
                         
                             <td>${fieldValue(bean: assegnazionePraticaInstance, field: "codiceQuestura")}</td>
                         --%>
-                            <td>${fieldValue(bean: assegnazionePraticaInstance.praticaAssegnata, field: "statoPratica")}</td>
+                            <td>${assegnazionePraticaInstance.praticaAssegnata?.statoPratica}</td>
                         
-                            <td>${fieldValue(bean: assegnazionePraticaInstance.praticaAssegnata, field: "tipologiaLegale")}</td>
-                            <td>${fieldValue(bean: assegnazionePraticaInstance.praticaAssegnata, field: "tipoPratica")}</td>
+                            <td>${assegnazionePraticaInstance.praticaAssegnata?.tipoPratica}</td>
                             
                         </tr>
                     </g:each>

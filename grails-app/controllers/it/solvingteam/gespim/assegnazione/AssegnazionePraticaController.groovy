@@ -122,17 +122,30 @@ class AssegnazionePraticaController {
 			eq("presaInCarico", false)
 			eq("areaCompetenza",user.area)
 		}
-		println "....................lista pratiche: "+assegnazionePraticaInstanceList
 		[assegnazionePraticaInstanceList:assegnazionePraticaInstanceList]
-		/*
+	}
+	
+	def confermaPresaInCaricoMassiva = {
+		
+		def listaAssegnazioni = AssegnazionePratica.getAll(params.findAll{
+			it.key.startsWith('_assegnaz_')
+			}?.values()?.collect{it as long})
+		
+		if(!listaAssegnazioni){
+			flash.error = "Nessuna voce selezionata"
+			redirect(controller:'pratica',action: "results")
+			return
+		}
+		
 		try {
-			assegnazionePraticaService.presaInCaricoMassiva(params)
-			
+			assegnazionePraticaService.presaInCaricoMassiva(listaAssegnazioni)
+			flash.message = "Presa in carico effettuata con successo."
+			redirect(controller:'pratica',action: "results")
+			return
 		} catch (Exception ex) {
 			flash.error = ex.message
-			redirect(controller:'pratica',action: "results",params:params)
+			render(view:'presaInCaricoMassiva',model:[assegnazionePraticaInstanceList:listaAssegnazioni*.refresh()])
 		}
-		*/
 	}
 	
 }
