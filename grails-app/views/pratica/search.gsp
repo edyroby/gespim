@@ -44,17 +44,19 @@
         </div>
         --%>
         <div class="body">
-       
-        
+        <br />
             <g:if test="${flash.message}">
             	<div class="message">${flash.message}</div>
+            	<br />
             </g:if>
             <g:if test="${flash.error}">
             	<div class="errors">${flash.error}</div>
+            	<br />
             </g:if>
             <g:hasErrors bean="${praticaFlussiStagionaliInstance}">
             <div class="errors">
                 <g:renderErrors bean="${praticaFlussiStagionaliInstance}" as="list" />
+                <br />
             </div>
             </g:hasErrors>
             <g:form action="results" controller="pratica">

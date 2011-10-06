@@ -11,14 +11,16 @@
     <body>
        
         <div class="body">
-          
             <br />
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
+            <br />
             </g:if>
+            
             <g:hasErrors bean="${praticaInstance}">
             <div class="errors">
                 <g:renderErrors bean="${praticaInstance}" as="list" />
+                <br />
             </div>
             </g:hasErrors>
             <div id="modifica_pratica">

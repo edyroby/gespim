@@ -37,24 +37,19 @@
         </div>
         --%>
         <div id="wrapper">
-            
+            <br />
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
+            <br />
             </g:if>
-
             <g:if test="${flash.error}">
             <div class="errors">${flash.error}</div>
+            <br />
             </g:if>
             <div class="list">
-               
-
-           
-             
                 <table class="risultati">
-
                     <thead>
                         <tr>
-                        
                         	<th class="checkbox_table">
                         		<g:checkBox name="selectAll" id="checkAllAuto" value="0" checked="false" onclick="jqCheckAll2( this.id, 'praticaId' )"/>
                         	</th>
