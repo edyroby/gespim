@@ -10,7 +10,7 @@
         <script>
         	$(function() { 
 			
-				var $dialog = $( "#dialog-confirm" ).dialog({
+				$( "#dialog-confirm" ).dialog({
 					autoOpen: false,
 					resizable: false,
 					height:140,
@@ -18,6 +18,7 @@
 					buttons: {
 						"Confermare Operazione?": function() {
 							$( this ).dialog( "close" );
+							$("#mioform").submit();
 						},
 						Cancel: function() {
 							$( this ).dialog( "close" );
@@ -26,9 +27,8 @@
 				});
 
 
-				$('#mysubmit').click(function() {
+				$('#miobutton').click(function() {
 					$dialog.dialog('open');
-					
 					// prevent the default action, e.g., following a link
 					return result;
 				});
@@ -37,6 +37,7 @@
 		</script>
     </head>
     <body>
+    <form action="index" id="mioform">
     	<%---------------------- FINESTRA CONFIRM ---------------------%>
     	<div id="dialog-confirm" title="Conferma operazione?">
 			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Confermare Operazione?</p>
@@ -44,7 +45,9 @@
 		<%---------------------- FINE FINESTRA CONFIRM ---------------------%>
 		
         <div class="buttons">
+        <input type="button" value="andiamo al nigth" id="miobutton">
                 <g:actionSubmit id="mysubmit"  action="" value="Prendi in Carico" />
         </div>
+        </form>
     </body>
 </html>
