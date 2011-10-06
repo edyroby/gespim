@@ -32,12 +32,13 @@
             <br />
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
-            </g:if>
-            <g:if test="${flash.error}">
-            <div class="errors">${flash.error}</div>
+            <br />
             </g:if>
             
- 
+            <g:if test="${flash.error}">
+            <div class="errors">${flash.error}</div>
+            <br />
+            </g:if>
 <div id="content_tabs">
   
 		 <div id="tabs">

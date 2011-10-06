@@ -588,8 +588,10 @@ td {
 }
 
 #tabs ul{
-	font: 13px Trebuchet MS;
-	text-decoration  : none;
+	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
+	font-weight:normal;
+	letter-spacing:1px;
+	text-decoration: none;
 	color:#fff;
 	background:url(../images/menu-tabs.gif) top repeat-x;
 	width: 850px ;
@@ -653,13 +655,24 @@ label {
 
 
 .message{
-	color:red;	
+	color: #006dba;
 	text-align: center;
+	width:350px;
+	margin:auto;
+	padding:2px;
+	height: 20px;
+	background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
+    border: 1px solid #b2d1ff;
 }
 
 .errors{
-	color:red;	
+	background: url(../images/skin/exclamation.png) 8px 50% no-repeat;
+	color: #cc0000;
 	text-align: center;
+	border:1px solid;
+	width:250px;
+	margin:auto;
+	
 }
 
 .risultati th {
@@ -685,11 +698,11 @@ label {
 	
 }
 
-.paginateButtons{
+/*.paginateButtons{
 	margin: auto;
-	width: 25%;
-	padding:1px;
-}
+	padding:2px;
+	text-align: center;
+}*/
 
 #table input{
 	margin:4px;
@@ -849,5 +862,78 @@ label {
 .allineo_sx_txt{
 	padding: 0px 0px 0px 5px;
 }
+
+#presaincarico{
+	text-align:center;
+}
+
+.table_presaincarico{
+	font-size: 11px; 
+	font-family: "Lucida Grande";
+	width: 55%;
+	height: auto;
+	margin-right:auto;
+	margin-left:auto;
+	display: block; 
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0.3em;
+	
+}
+
+.table_presaincarico th {
+	
+	padding: 0.2em;
+	text-align: center;
+	border-bottom: 1px solid #000000;
+	border-top:1px solid;
+	border-left:1px solid;
+	border-right:1px solid;
+	width: 200px;
+	background-color: #3A94C9;
+	
+	
+}
+
+.table_presaincarico tr {
+	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	color: #000;
+	height: 30px;
+	
+}
+.table_presaincarico td {
+	font: 11px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	width: auto;
+	border:1px solid;
+	padding: 0.2em;
+	text-transform: capitalize;
+}
+
+
+
+/* PAGINATION */
+
+.paginateButtons {
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    border: 1px solid #ccc;
+    border-top: 0;
+    color: #666;
+    font-size: 10px;
+    overflow: hidden;
+    padding: 7px 3px;
+    text-align: center;
+}
+.paginateButtons a {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-color: #ccc #aaa #aaa #ccc;
+    color: #666;
+    margin: 0 3px;
+    padding: 2px 6px;
+}
+.paginateButtons span {
+    padding: 2px 3px;
+}
+
 
 
