@@ -88,7 +88,7 @@
                             <td>${fieldValue(bean: praticaInstance, field: "tipologiaLegale")}</td>
                             <td>${fieldValue(bean: praticaInstance, field: "tipoPratica")}</td>
                             
-                            <td>
+                            <td >
                             	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }">Dettaglio</g:link>
                             </td>
                         
