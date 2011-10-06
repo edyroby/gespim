@@ -127,9 +127,16 @@ class AssegnazionePraticaController {
 	
 	def confermaPresaInCaricoMassiva = {
 		
-		def listaAssegnazioni = AssegnazionePratica.getAll(params.findAll{
+		def listaIdAssegnaz = params.findAll{
 			it.key.startsWith('_assegnaz_')
-			}?.values()?.collect{it as long})
+			}?.values()?.collect{it as long}
+			
+		if(!listaIdAssegnaz){
+			flash.error = "Nessuna voce selezionata"
+			render(view:'presaInCaricoMassiva')
+			return
+		}
+		def listaAssegnazioni = AssegnazionePratica.getAll(listaIdAssegnaz)
 		
 		if(!listaAssegnazioni){
 			flash.error = "Nessuna voce selezionata"
