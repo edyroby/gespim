@@ -1,3 +1,4 @@
+
 <g:javascript src="ajaxify/jquery-1.2.6.min.js" />
 <g:javascript src="ajaxify/jquery.ajaxify.min.js" />
 <script type="text/javascript">
@@ -14,7 +15,7 @@ $(function() {
 </script>
 <div id="cnt3">
 	<div class="list">
-		<table>
+		<table class="tabel_storico">
 			<thead>
 				<tr>
 					<g:sortableColumn params="${params }" property="tipoOperazione.descrizione"	title="Operazione" />
@@ -22,7 +23,7 @@ $(function() {
 					<g:sortableColumn params="${params }" property="areaAssegnataria"	title="Assegnata A" />
 					<g:sortableColumn params="${params }" property="dataOperazione"	title="Data" />
 					<g:sortableColumn params="${params }" property="presaInCarico"	title="In Carico" />
-					<g:sortableColumn params="${params }" property="dataPresaInCarico"	title="Data presa in c." />
+					<g:sortableColumn params="${params }" property="dataPresaInCarico"	title="Presa in carico" />
 					<g:sortableColumn params="${params }" property="utenteOperatore"	title="Utente esecutore" />
 					<g:sortableColumn params="${params }" property="esito"	title="Esito" />
 	

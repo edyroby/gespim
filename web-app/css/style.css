@@ -225,6 +225,15 @@ select {
 	margin:6px;
 	color:#000;
     } 
+#modifica_pratica select {
+    font: 13px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
+	color:#333;
+	width: 240px;
+	margin:6px;
+	color:#000;
+    } 
+    
+    
 
 
 h2 {
@@ -449,11 +458,30 @@ td {
 .buttons {
 	padding-top: 190px;
 	padding-bottom: 30px;
-	
 	height: 20px;
 	text-align: center;
 	margin-right:auto;
 	margin-left:auto;
+}
+
+.buttons_multipli{
+	padding:10px;
+	height: 20px;
+	text-align: center;
+	margin:auto;
+}
+
+.buttons_multipli input{
+	 background:#ff9900;
+	 color:#fff;
+	 font-weight:bold;
+	 height:34px;
+	 background:url(../images/submit_l.png) top no-repeat;
+	 border:1px solid;
+	 text-align:center;
+	 width:125px;
+}
+
 }
 .save {
 	border: 0 none;	
@@ -564,7 +592,7 @@ td {
 	text-decoration  : none;
 	color:#fff;
 	background:url(../images/menu-tabs.gif) top repeat-x;
-	width: 820px ;
+	width: 850px ;
 	margin-right:auto;
 	margin-left:auto;
 	
@@ -622,12 +650,16 @@ label {
 	 text-align:center;
 	 width:125px;
 }
+
+
 .message{
 	color:red;	
+	text-align: center;
 }
 
 .errors{
 	color:red;	
+	text-align: center;
 }
 
 .risultati th {
@@ -639,7 +671,7 @@ label {
 	border-left:1px solid;
 	border-right:1px solid;
 	width: 200px;
-	background-color: #eaf4fd;
+	background-color: #3A94C9;
 	
 	
 }
@@ -658,3 +690,164 @@ label {
 	width: 25%;
 	padding:1px;
 }
+
+#table input{
+	margin:4px;
+	height:20px;
+	width:195px;
+	
+}
+
+#content_tabs{
+	width:900px;
+	margin:auto;
+}
+
+.table_detail_datore_lavoratore{
+	font-size: 11px; 
+	font-family: "Lucida Grande";
+	width: 90%;
+	height: auto;
+	margin-right:auto;
+	margin-left:auto;
+	display: block; 
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0.3em;
+	
+}
+
+
+
+.table_detail_datore_lavoratore tr {
+	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	color: #000;
+	height: 30px;
+	
+}
+.table_detail_datore_lavoratore td {
+	font: 11px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	width: 415px;
+	border:1px solid;
+	padding: 0.2em;
+	text-transform: capitalize;
+}
+
+.tabel_storico{
+	font-size: 11px; 
+	font-family: "Lucida Grande";
+	width: 100%;
+	height: auto;
+	margin-right:auto;
+	margin-left:auto;
+	display: block; 
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0.3em;
+	
+}
+
+.tabel_storico th {
+	
+	padding: 0.2em;
+	text-align: center;
+	border-bottom: 1px solid #000000;
+	border-top:1px solid;
+	border-left:1px solid;
+	border-right:1px solid;
+	width: 200px;
+	background-color: #3A94C9;
+	
+	
+}
+
+.tabel_storico tr {
+	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	color: #000;
+	height: 30px;
+	
+}
+.tabel_storico td {
+	font: 11px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	width: auto;
+	border:1px solid;
+	padding: 0.2em;
+	text-transform: capitalize;
+}
+
+#modifica_pratica{
+	text-align: center;
+}
+
+#assegnazione_pratica{
+	text-align: center;
+}
+.table_modifica_pratica{
+	font-size: 11px; 
+	font-family: "Lucida Grande";
+	width: 50%;
+	height: auto;
+	margin-right:auto;
+	margin-left:auto;
+	display: block; 
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0.3em;
+	
+}
+
+.table_modifica_pratica tr {
+	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	color: #000;
+	height: 30px;
+	
+}
+.table_modifica_pratica td {
+	font: 11px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	width: 415px;
+	border:1px solid;
+	padding: 0.2em;
+	text-transform: capitalize;
+}
+
+.table_assegnazione_pratica{
+	font-size: 11px; 
+	font-family: "Lucida Grande";
+	width: 50%;
+	height: auto;
+	margin-right:auto;
+	margin-left:auto;
+	display: block; 
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0.3em;
+	
+}
+
+.table_assegnazione_pratica tr {
+	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	color: #000;
+	height: 30px;
+	
+}
+.table_assegnazione_pratica td {
+	font: 11px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
+	width: 415px;
+	border:1px solid;
+	padding: 0.2em;
+	text-transform: capitalize;
+}
+
+.table_assegnazione_pratica input{
+	float:left;
+}
+
+.allineo_sx{
+	text-align: left;
+}
+
+.allineo_sx_txt{
+	padding: 0px 0px 0px 5px;
+}
+
+

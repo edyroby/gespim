@@ -6,16 +6,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'pratica.label', default: 'Pratica')}" />
-        <title>Modifica Pratica</title>
+        <title>SANA - Sportello Unico Immigrazione - Roma (Modifica Pratica)</title>
     </head>
     <body>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
-        </div>
+       
         <div class="body">
-            <h1>Modifica Pratica</h1>
+          
+            <br />
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -24,15 +21,15 @@
                 <g:renderErrors bean="${praticaInstance}" as="list" />
             </div>
             </g:hasErrors>
+            <div id="modifica_pratica">
+              <h3>Modifica Pratica</h3>
             <g:form method="post" >
                 <g:hiddenField name="id" value="${praticaInstance?.id}" />
                 <g:hiddenField name="version" value="${praticaInstance?.version}" />
-                <div class="dialog">
-                    <table>
+               
+                    <table class="table_modifica_pratica">
                         <tbody>
-		                    <tr class="prop">
-		                        <td>&nbsp</td>
-		                    </tr>
+		                    
                         <%-- 
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -61,8 +58,8 @@
                                 </td>
                             </tr>
                         --%>
-                            <tr class="prop">
-                                <td valign="top" class="name">
+                            <tr>
+                                <td valign="top">
                                   <label for="statoPratica"><g:message code="pratica.statoPratica.label" default="Stato Pratica" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: praticaInstance, field: 'statoPratica', 'errors')}">
@@ -71,7 +68,7 @@
                             </tr>
                         
                             <tr class="prop">
-                                <td valign="top" class="name">
+                                <td valign="top">
                                   <label for="tipologiaLegale"><g:message code="pratica.tipologiaLegale.label" default="Tipologia Legale" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: praticaInstance, field: 'tipologiaLegale', 'errors')}">
@@ -106,13 +103,11 @@
                                 </td>
                             </tr>
                         --%>
-                        	<tr class="prop">
-		                        <td>&nbsp</td>
-		                    </tr>
+                        	
                         </tbody>
                     </table>
-                </div>
-                <div class="buttons">
+              
+                <div class="buttons_multipli">
                 	<g:actionSubmit id="mysubmit"  action="update" value="Conferma" />
                     <g:actionSubmit id="mysubmit"  action="showDettaglioPratica" value="Indietro" />
                     <%-- 
@@ -123,6 +118,8 @@
                     --%>
                 </div>
             </g:form>
+            
+            </div>
         </div>
     </body>
 </html>
