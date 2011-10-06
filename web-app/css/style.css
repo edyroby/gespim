@@ -170,9 +170,6 @@ textarea {
 	line-height:19px;
 	
 }
-
-
-
 #table {
 	width:820px;
 	height:auto;
@@ -192,15 +189,29 @@ td {
 	text-align: center;
 	background:url(../images/td.jpg) top repeat-x;
 }
-
 .w5pc {
 	width: 200px;
 }
 
-.sortable {
+ .sortable {
 	width: 200px;
 }
 
+.sortable a {
+	border: 0px solid;
+	text-decoration: none;
+	color: #000;
+	height: 100px;	
+}
+/*
+.sortable a:hover {
+	background-image: url("../images/sortable.png");
+}
+*/
+.sortable a:focus {
+	background-image: url("../images/sortable.png");
+	background-position: 0 -284px
+}
 .w12pc {
 	width: 200px;
 }
@@ -558,11 +569,10 @@ ul#menu_footer li a.current{
 	padding: 0.3em;
 }
 
-.risultati a {
-	background-image: url("images/dettaglio.png"); 
-	border: 1px solid;
-	
+th:hover {
+	background-image: url("../images/sortable.png");	
 }
+
 tr {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
 	color: #000;
