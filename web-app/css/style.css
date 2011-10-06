@@ -558,6 +558,11 @@ ul#menu_footer li a.current{
 	padding: 0.3em;
 }
 
+.risultati a {
+	background-image: url("images/dettaglio.png"); 
+	border: 1px solid;
+	
+}
 tr {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
 	color: #000;
