@@ -96,3 +96,6 @@ grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'it.solvingtea
 grails.plugins.springsecurity.authority.className = 'it.solvingteam.gespim.security.Ruolo'
 grails.plugins.springsecurity.requestMap.className = 'it.solvingteam.gespim.security.RequestMap'
 grails.plugins.springsecurity.securityConfigType = 'Requestmap'
+
+
+jasper.dir.reports = '/reports'

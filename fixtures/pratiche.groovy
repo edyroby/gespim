@@ -53,6 +53,27 @@ fixture {
 		beneficiari = [beneficiario2]
 		statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_ATTESA_PARERE_DPL)
 	}
+	pratica_emersione3(Pratica,numeroPratica:'P-RM/L/N/2009/123448',codiceIstanza:'4869',codiceQuestura:'agdf1'){
+		tipoPratica = TipoPratica.findByCodice('TP03')
+		beneficiari = [lavoratore2]
+		statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
+		richiedente = datore1
+		tipologiaLegale = TipologiaLegale.findByCodice(TipologiaLegale.COD_ASSENZA)
+	}
+	pratica_emersione4(Pratica,numeroPratica:'P-RM/L/N/2009/123449',codiceIstanza:'4870',codiceQuestura:'agdf2'){
+		tipoPratica = TipoPratica.findByCodice('TP03')
+		beneficiari = [lavoratore2]
+		statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
+		richiedente = datore2
+		tipologiaLegale = TipologiaLegale.findByCodice(TipologiaLegale.COD_ASSENZA)
+	}
+	pratica_emersione5(Pratica,numeroPratica:'P-RM/L/N/2009/123450',codiceIstanza:'4871',codiceQuestura:'agdf3'){
+		tipoPratica = TipoPratica.findByCodice('TP03')
+		beneficiari = [lavoratore2]
+		statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
+		richiedente = datore3
+		tipologiaLegale = TipologiaLegale.findByCodice(TipologiaLegale.COD_ASSENZA)
+	}
 	
 	
 }

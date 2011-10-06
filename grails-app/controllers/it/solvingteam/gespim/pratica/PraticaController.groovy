@@ -1,5 +1,7 @@
 package it.solvingteam.gespim.pratica
 
+import org.codehaus.groovy.grails.plugins.jasper.JasperExportFormat;
+import org.codehaus.groovy.grails.plugins.jasper.JasperReportDef
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
 
 import grails.converters.JSON
@@ -14,6 +16,8 @@ import it.solvingteam.gespim.storico.Storico;
 class PraticaController {
 
 	def springSecurityService
+	def jasperService
+	def logo = servletContext.getRealPath("/images/logo-repubblica-italiana.gif")
 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -30,7 +34,7 @@ class PraticaController {
 		def listaPratiche = Pratica.cercaPratiche(cmd,user,params)
 		[listaPratiche:listaPratiche,listaPraticheTotal:listaPratiche.totalCount]
 	}
-
+	
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		[praticaInstanceList: Pratica.list(params), praticaInstanceTotal: Pratica.count()]
@@ -171,6 +175,85 @@ class PraticaController {
 	
 	def presaInCaricoMassiva = {
 		redirect(controller:'assegnazionePratica',action:'presaInCaricoMassiva',params:params)
+	}
+	
+	def searchStampa = {
+	}
+	
+	def resultsForStampa = {PraticaCommand cmd ->
+		
+		if(!cmd.statoPratica || !cmd.tipologiaLegale || !cmd.tipoPratica){
+			flash.message = "E' necessario selezionare tutte e tre le voci."
+			redirect(action: "searchStampa")
+			return
+		}
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		def user = springSecurityService.currentUser
+		def listaPratiche = Pratica.cercaPratichePerStampe(cmd,user,params)
+		[listaPratiche:listaPratiche,listaPraticheTotal:listaPratiche.totalCount]
+	}
+	
+	def stampaMassiva = {
+		
+		if(!params['praticaId']){
+			flash.error = "Nessuna voce selezionata"
+			redirect(action: "resultsForStampa",params:params)
+			return
+		}
+		
+		def user = springSecurityService.currentUser
+		
+		def listaPratiche = []
+		if(params['praticaId']?.size() == 1 ){
+			listaPratiche << Pratica.get(params['praticaId'] as long)
+		}else{
+			listaPratiche += Pratica.getAll(params['praticaId']?.toList()?.collect{it as long})
+		}
+		
+		def parametersList = []
+		listaPratiche?.each{pratica ->
+			def beneficiario = pratica.beneficiari?.toArray()[0]
+			parametersList << [
+					Logo: logo,
+					BARCODE : "BARCODE",
+					IdDocOA : pratica.numeroPratica,
+					A_ProtocolloStampa : "XXXXXXXXXXXXX",
+					Cognome : pratica.richiedente?.cognome,
+					Nome : pratica.richiedente?.nome,
+					IndirizzoResidenza : pratica.richiedente?.residenza,
+					NumeroCivicoResidenza : "54",
+					CAPResidenza : "00100",
+					ComuneResidenza : pratica.richiedente?.residenza,
+					LocalitaResidenza : pratica.richiedente?.residenza,
+					SiglaProvinciaResidenza : pratica.richiedente?.provinciaResidenza,
+					StatoResidenza : "STATO RESIDENZA",
+					Informazione31 : beneficiario?.cognome,
+					Informazione32 : beneficiario?.nome,
+					Informazione33 : beneficiario?.dataNascita,
+					Informazione34 : beneficiario?.cittadinanza,
+					Data : "10/04/2004",
+					DataAtto : new Date(),
+					RigaFirma1 : "Santoriello Ferdinando"
+					]
+			}
+		def reportDef = new JasperReportDef(
+			name:"Art10Bis2",
+			fileFormat:JasperExportFormat.PDF_FORMAT,
+			reportData:parametersList,
+			parameters:[:]
+		)
+		
+		def outputStream = response.getOutputStream()
+		byte[] bytes = jasperService.generateReport(reportDef).toByteArray()
+		
+		response.setContentType("application/pdf")
+		response.setContentLength(bytes.length)
+		
+		outputStream.write(bytes, 0, bytes.length)
+		outputStream.flush()
+		outputStream.close()
+		
+		
 	}
 
 	def autocompleteResult = {

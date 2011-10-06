@@ -89,6 +89,40 @@ class Pratica {
 		}
 
 	}
+	
+	def static cercaPratichePerStampe(cmd,user,params){
+		def c = Pratica.createCriteria()
 
+		def results = c.list(params){
+/*			
+			if(cmd.assegnateAdUfficio){
+				assegnazioni{
+					eq 'areaCompetenza',user.area
+				}
+			}
+
+			if(cmd.numeroPratica){
+				ilike 'numeroPratica', "%${cmd.numeroPratica}%"
+			}
+			if(cmd.codiceQuestura){
+				ilike 'codiceQuestura', "%${cmd.codiceQuestura}%"
+			}
+			if(cmd.codiceIstanza){
+				ilike 'codiceIstanza', "%${cmd.codiceIstanza}%"
+			}
+			*/
+			if(cmd.statoPratica){
+				eq 'statoPratica.id', cmd.statoPratica as long
+			}
+			if(cmd.tipoPratica){
+				eq 'tipoPratica.id', cmd.tipoPratica as long
+			}
+			if(cmd.tipologiaLegale){
+				eq 'tipologiaLegale.id', cmd.tipologiaLegale as long
+			}
+
+		}
+
+	}
 	
 }
