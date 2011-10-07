@@ -64,7 +64,7 @@
                             <th>Stato Pratica</th>
                             <th>Tipologia Legale</th>
                             <th>Tipo Pratica</th>
-                            <th>Azioni</th>
+                            <th>Dettaglio</th>
                         
                         </tr>
                     </thead>
@@ -89,7 +89,7 @@
                             <td>${fieldValue(bean: praticaInstance, field: "tipoPratica")}</td>
                             
                             <td >
-                            	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }">Dettaglio</g:link>
+                            	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }"><img src="${resource(dir:'images',file:'lente.png')}" alt="Dettaglio"/></g:link>
                             </td>
                         
                         </tr>

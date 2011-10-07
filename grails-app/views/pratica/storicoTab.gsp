@@ -75,7 +75,7 @@ $(function() {
 		</table>
 	</div>
 
-<div class="paginateButtons">
+<div class="paginateButtons_storico">
      <g:paginate total="${storicoInstanceTotal}" params="${params }"/>
 </div>
 </div>
