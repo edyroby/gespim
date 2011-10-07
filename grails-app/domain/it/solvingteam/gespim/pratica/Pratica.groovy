@@ -3,6 +3,8 @@ package it.solvingteam.gespim.pratica
 import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.StatoPratica;
 import it.solvingteam.gespim.tipologiche.TipologiaLegale;
+import it.solvingteam.gespim.assegnazione.AssegnazionePratica;
+import it.solvingteam.gespim.workflow.IterPratica
 
 class Pratica {
 
@@ -18,7 +20,7 @@ class Pratica {
 	
 	Richiedente richiedente
 	
-	static hasMany = [beneficiari:Beneficiario]
+	static hasMany = [beneficiari:Beneficiario,assegnazioni:AssegnazionePratica,iter:IterPratica]
 
 
 	static constraints = {
@@ -30,12 +32,20 @@ class Pratica {
 		tipoPratica(nullable:false)
 		richiedente(nullable:true)
 		beneficiari(nullable:true)
+		assegnazioni(nullable:true)
+		iter(nullable:true)
 	}
 	
-	def static cercaPratiche(cmd,params){
+	def static cercaPratiche(cmd,user,params){
 		def c = Pratica.createCriteria()
 
 		def results = c.list(params){
+			
+			if(cmd.assegnateAdUfficio){
+				assegnazioni{
+					eq 'areaCompetenza',user.area
+				}
+			}
 
 			if(cmd.numeroPratica){
 				ilike 'numeroPratica', "%${cmd.numeroPratica}%"
@@ -71,7 +81,6 @@ class Pratica {
 				}
 			}
 			if(cmd.beneficiari){
-				println "...........beneficiari:     "+cmd.beneficiari
 				beneficiari{
 					'in'("id",cmd.beneficiari?.collect{it.id})
 				}
@@ -80,6 +89,40 @@ class Pratica {
 		}
 
 	}
+	
+	def static cercaPratichePerStampe(cmd,user,params){
+		def c = Pratica.createCriteria()
 
+		def results = c.list(params){
+/*			
+			if(cmd.assegnateAdUfficio){
+				assegnazioni{
+					eq 'areaCompetenza',user.area
+				}
+			}
+
+			if(cmd.numeroPratica){
+				ilike 'numeroPratica', "%${cmd.numeroPratica}%"
+			}
+			if(cmd.codiceQuestura){
+				ilike 'codiceQuestura', "%${cmd.codiceQuestura}%"
+			}
+			if(cmd.codiceIstanza){
+				ilike 'codiceIstanza', "%${cmd.codiceIstanza}%"
+			}
+			*/
+			if(cmd.statoPratica){
+				eq 'statoPratica.id', cmd.statoPratica as long
+			}
+			if(cmd.tipoPratica){
+				eq 'tipoPratica.id', cmd.tipoPratica as long
+			}
+			if(cmd.tipologiaLegale){
+				eq 'tipologiaLegale.id', cmd.tipologiaLegale as long
+			}
+
+		}
+
+	}
 	
 }

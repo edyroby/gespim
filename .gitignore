@@ -4,3 +4,4 @@
 stacktrace.log
 target
 *.swp
+web-app/WEB-INF/classes/

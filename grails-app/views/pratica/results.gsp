@@ -3,30 +3,54 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
-        <title>Risultati Ricerca</title>
+        <title>SANA - Sportello Unico Immigrazione - Roma (Risultati Ricerca)</title>
           <g:javascript src="jQuery/jquery-1.5.1.min.js" />
+          <g:javascript src="jQuery/jquery-ui-1.8.12.custom.min.js" />
+          <link rel="stylesheet" media="all" type="text/css"  href="${resource(dir:'css/redmond', file:'jquery-ui-1.8.13.custom.css')}" />
         <script type="text/javascript">
 	        function jqCheckAll2( id, name ){
 	           $("INPUT[@name=" + name + "][type='checkbox']").attr('checked', $('#' + id).is(':checked'));
 	        }
+	        function check(){
+				 var the_value;
+				 the_value = $("input:checkbox[type='checkbox']:checked").val();
+				 if(the_value == null || the_value==''){
+					alert('Selezionare una voce.')
+					return false
+				}
+				return true
+			}
+
         </script>
     </head>
     <body>
-        <div class="nav">
+
+    	<g:form  method="post">
+        
+
+        <%-- <div class="nav">
+
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
+            
             <span class="menuButton"><g:link class="create" action="create">Nuova Pratica</g:link></span>
+            
         </div>
-        <div class="body">
-            <h1>Risultati Ricerca</h1>
+        --%>
+        <div id="wrapper">
+            <br />
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
+            <br />
+            </g:if>
+            <g:if test="${flash.error}">
+            <div class="errors">${flash.error}</div>
+            <br />
             </g:if>
             <div class="list">
-                <table>
+                <table class="risultati">
                     <thead>
                         <tr>
-                        
-                        	<th class="w5pc">
+                        	<th class="checkbox_table">
                         		<g:checkBox name="selectAll" id="checkAllAuto" value="0" checked="false" onclick="jqCheckAll2( this.id, 'praticaId' )"/>
                         	</th>
                             <g:sortableColumn params="${params }" property="numeroPratica" title="${message(code: 'praticaArticolo27.numeroPratica.label', default: 'Numero Pratica')}" />
@@ -38,12 +62,9 @@
                             <g:sortableColumn property="codiceQuestura" title="${message(code: 'praticaArticolo27.codiceQuestura.label', default: 'Codice Questura')}" />
                         --%>
                             <th>Stato Pratica</th>
-                        
                             <th>Tipologia Legale</th>
                             <th>Tipo Pratica</th>
-                            
-                             
-                            <th class="azioni">Azioni</th>
+                            <th>Azioni</th>
                         
                         </tr>
                     </thead>
@@ -51,7 +72,7 @@
                     <g:each in="${listaPratiche}" status="i" var="praticaInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
-                        	<td class="w5pc">
+                        	<td>
                         		<g:checkBox name="praticaId" id="praticaId" value="${praticaInstance.id}" checked="false"/>
                         	</td>
                             <td>${fieldValue(bean: praticaInstance, field: "numeroPratica")}</td>
@@ -67,19 +88,27 @@
                             <td>${fieldValue(bean: praticaInstance, field: "tipologiaLegale")}</td>
                             <td>${fieldValue(bean: praticaInstance, field: "tipoPratica")}</td>
                             
-                            <td class="w12pc">
-                            	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }">Visualizza</g:link>
-                            	<g:link class="show" action="">Modifica</g:link>
+                            <td >
+                            	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }">Dettaglio</g:link>
                             </td>
                         
                         </tr>
                     </g:each>
                     </tbody>
                 </table>
-            </div>
+                </div>
+          
             <div class="paginateButtons">
                 <g:paginate total="${listaPraticheTotal}" params="${params }"/>
             </div>
+
         </div>
+        <div class="button_incarico">
+                <g:actionSubmit id="mysubmit"  action="presaInCaricoMassiva" value="Prendi in Carico" onclick="return check()"/>
+        </div>
+        </g:form>
+
+     
+
     </body>
 </html>

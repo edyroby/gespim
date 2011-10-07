@@ -45,6 +45,7 @@ tipoPratiche{
 	*/
 }
 
+/*
 tipoRichiedenti{
 	TR01{
 		nome = 'Datore'
@@ -56,7 +57,7 @@ tipoRichiedenti{
 		nome = 'Richiedente Ricongiungimento'
 	}
 }
-
+/*
 tipoBeneficiari{
 	TB01{
 		nome = 'Lavoratore'
@@ -68,4 +69,4 @@ tipoBeneficiari{
 		nome = 'Ricongiunto'
 	}
 }
-
+*/

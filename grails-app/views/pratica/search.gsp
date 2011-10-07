@@ -8,7 +8,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
-        <title>Ricerca Pratica</title>
+        <title>SANA - Sportello Unico Immigrazione - Roma (Ricerca Pratica)</title>
          <g:javascript src="jQuery/jquery-1.5.1.min.js" />
 	    <g:javascript src="jQuery/jquery-ui-1.8.12.custom.min.js" />
         
@@ -29,31 +29,49 @@
 	             });
 		     });
 	     </script>
-	    
-	    
-	    <g:jqDatepickerLocale lang="it" />
+		
+
+<g:jqDatepickerLocale lang="it" />
     </head>
     <body>
-        <div class="nav">
+       <%--  <div class="nav">
+       
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
-            <%-- 
+            
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
-            --%>
+            
+            <!--  <span class="menuButton"><g:link controller="importFile"  action="insert"><g:message code="default.import.label" args="[entityName]" /></g:link></span> -->
         </div>
+        --%>
         <div class="body">
-            <h1>Ricerca Pratica</h1>
+        <br />
             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
+            	<div class="message">${flash.message}</div>
+            	<br />
+            </g:if>
+            <g:if test="${flash.error}">
+            	<div class="errors">${flash.error}</div>
+            	<br />
             </g:if>
             <g:hasErrors bean="${praticaFlussiStagionaliInstance}">
             <div class="errors">
                 <g:renderErrors bean="${praticaFlussiStagionaliInstance}" as="list" />
+                <br />
             </div>
             </g:hasErrors>
             <g:form action="results" controller="pratica">
-                <div class="dialog">
-                    <table>
+                <div class="content">
+                    <table id="table">
                         <tbody>
+                        
+                        	<tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="assegnateAdUfficio">Solo Area di Appartenenza</label>
+                                </td>
+                                <td valign="top" class="value">
+                                    <g:checkBox name="assegnateAdUfficio"  />
+                                </td>
+                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -109,14 +127,7 @@
                                 </td>
                             </tr>
                             
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="lavoratoreId">Lavoratore/Straniero</label>
-                                </td>
-                                <td valign="top" class="value">
-                                    <input type="text" id="beneficiari" name="beneficiari" />
-                                </td>
-                            </tr>
+                           
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -145,13 +156,21 @@
                                     <g:select name="tipologiaLegale" from="${it.solvingteam.gespim.tipologiche.TipologiaLegale.list()}" optionKey="id" optionValue="descrizione"  noSelection="['': '- selezionare una voce -']"/>
                                 </td>
                             </tr>
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="lavoratoreId">Lavoratore/Straniero</label>
+                                </td>
+                                <td valign="top" class="name_tokeninput">
+                                    <input type="text" id="beneficiari" name="beneficiari" />
+                                </td>
+                            </tr>
                         
                         </tbody>
                     </table>
+                  <div class="button"><g:submitButton name="results" value="Cerca" /></div>
                 </div>
-                <div class="buttons">
-                    <span class="button"><g:submitButton name="results" class="save" value="CERCA" /></span>
-                </div>
+                
+               
             </g:form>
         </div>
     </body>

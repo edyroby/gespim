@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Art10Bis2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="Nome" class="java.lang.String"/>
+	<field name="Logo" class="java.lang.String"/>
+	<field name="RigaFirma1" class="java.lang.String"/>
+	<field name="DataAtto" class="java.util.Date"/>
+	<field name="Data" class="java.lang.String"/>
+	<field name="Informazione31" class="java.lang.String"/>
+	<field name="Informazione32" class="java.lang.String"/>
+	<field name="Informazione33" class="java.lang.String"/>
+	<field name="Informazione34" class="java.lang.String"/>
+	<field name="StatoResidenza" class="java.lang.String"/>
+	<field name="SiglaProvinciaResidenza" class="java.lang.String"/>
+	<field name="LocalitaResidenza" class="java.lang.String"/>
+	<field name="ComuneResidenza" class="java.lang.String"/>
+	<field name="CAPResidenza" class="java.lang.String"/>
+	<field name="NumeroCivicoResidenza" class="java.lang.String"/>
+	<field name="IndirizzoResidenza" class="java.lang.String"/>
+	<field name="Cognome" class="java.lang.String"/>
+	<field name="A_ProtocolloStampa" class="java.lang.String"/>
+	<field name="IdDocOA" class="java.lang.String"/>
+	<field name="BARCODE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement x="328" y="577" width="214" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IL DIRIGENTE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="328" y="633" width="214" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RigaFirma1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="375" width="522" height="106"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA['Si comunica, ai sensi del combinato disposto degli art. 10 bis della l. 241/1990 e dell’art. 1 ter della l. 102/2009, che questo Sportello è in procinto di adottare il provvedimento di rigetto della pratica relativa alla dichiarazione di emersione a favore di ' + $F{Informazione31} + ' ' + $F{Informazione32} + ', nato il ' + $F{Informazione33} + ' cittadino ' + $F{Informazione34} + ', in quanto, a seguito della documentazione pervenuta, risulta carente di <b><u>tutta la documentazione in originale.</u></b>']]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="534" width="522" height="18"/>
+				<textElement textAlignment="Justified">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Il responsabile del procedimento è il Dirigente dello Sportello Unico per l’Immigrazione di Roma.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="597" width="214" height="36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sportello Unico per l’Immigrazione di
+ROMA
+]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="20" y="481" width="522" height="48"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA['Eventuali osservazioni e/o documentazioni al riguardo potranno essere prodotte, <b><u>in data ' + $F{Data} + '</b></u>, presso la sede dello Sportello Unico per l’Immigrazione di Roma via Ostiense 131/L, dalle ore 14.30 alle ore 16.30.']]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="557" width="39" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Roma, ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="59" y="557" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{DataAtto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="305" width="130" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[RACCOMANDATA A/R]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="343" width="522" height="32"/>
+				<textElement textAlignment="Justified">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Oggetto: Procedura di emersione da lavoro irregolare - Preavviso di rigetto ai sensi dell’art. 10 bis della l. 241/90.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="165" width="522" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA['Riferimento pratica ' + $F{IdDocOA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="185" width="522" height="20"/>
+				<textElement verticalAlignment="Top">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA['Protocollo atto ' + $F{A_ProtocolloStampa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="211" width="522" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Cognome} + ' ' + $F{Nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="231" width="522" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{IndirizzoResidenza} + ' ' + $F{NumeroCivicoResidenza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="251" width="522" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CAPResidenza} + ' ' + $F{ComuneResidenza} + ' ' + $F{LocalitaResidenza} + ' ' + $F{SiglaProvinciaResidenza}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="271" width="522" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{StatoResidenza}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="245" y="20" width="64" height="69"/>
+				<imageExpression class="java.lang.String"><![CDATA[$F{Logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="95" y="89" width="364" height="55"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sportello Unico per l’Immigrazione di
+ROMA
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="0" width="78" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{BARCODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="745" width="522" height="34"/>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA['Il presente estratto da archivio informatico è stato predisposto, ai sensi dell’art. 3 del decreto legislativo 12 febbraio 1993 n. 39, tramite il sistema informativo automatizzato dello Sportello unico per l’immigrazione di Roma (SAN.A.). Il responsabile del procedimento è il ' + $F{RigaFirma1} + '. La firma autografa è sostituita dall’indicazione a stampa del nominativo del responsabile del procedimento.']]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="779" width="522" height="13"/>
+				<textElement markup="html">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Informazioni in merito a questo procedimento sul sito Internet <u>http://sana.interno.it</u>]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

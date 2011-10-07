@@ -101,3 +101,14 @@ grails.gorm.default.mapping = {
 	"user-type" type: org.joda.time.contrib.hibernate.PersistentLocalDateTime, class: org.joda.time.LocalDateTime
 	"user-type" type: org.joda.time.contrib.hibernate.PersistentPeriod, class: org.joda.time.Period
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'it.solvingteam.gespim.security.Utente'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'it.solvingteam.gespim.security.UtenteRuolo'
+grails.plugins.springsecurity.authority.className = 'it.solvingteam.gespim.security.Ruolo'
+grails.plugins.springsecurity.requestMap.className = 'it.solvingteam.gespim.security.RequestMap'
+grails.plugins.springsecurity.securityConfigType = 'Requestmap'
+
+
+jasper.dir.reports = '/reports'
+
