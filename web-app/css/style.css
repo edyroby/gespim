@@ -851,11 +851,11 @@ label {
 	border:1px solid;
 	padding: 0.2em;
 	text-transform: capitalize;
-	text-align:center;
+	
 }
 
 .table_assegnazione_pratica input{
-	float:left;
+	/*float:left;*/
 }
 
 .allineo_sx{
