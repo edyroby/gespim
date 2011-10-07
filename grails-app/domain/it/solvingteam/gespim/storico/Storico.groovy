@@ -1,5 +1,6 @@
 package it.solvingteam.gespim.storico
 
+import it.solvingteam.gespim.docobj.DocumentObject;
 import it.solvingteam.gespim.tipologiche.TipoOperazione;
 
 class Storico {
@@ -21,6 +22,8 @@ class Storico {
 	String utentePresaInCarico
 	String esito
 	
+	DocumentObject allegato
+	
 
     static constraints = {
 		numeroPratica(nullable:true)
@@ -34,5 +37,6 @@ class Storico {
 		dataPresaInCarico(nullable:true)
 		utentePresaInCarico(nullable:true)
 		esito(nullable:true)
+		allegato(nullable:true)
     }
 }

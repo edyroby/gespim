@@ -257,7 +257,7 @@ class PraticaController {
 			}
 			pratica.documenti?.clear()
 			pratica.addToDocumenti(docObj)
-			registraEmissioneDecreto(pratica,user)
+			registraEmissioneDecreto(pratica,docObj,user)
 			//FINE
 		}
 		def reportDef = new JasperReportDef(
@@ -285,7 +285,7 @@ class PraticaController {
 		
 	}
 	
-	private Storico registraEmissioneDecreto(praticaInstance,user){
+	private Storico registraEmissioneDecreto(praticaInstance,allegato,user){
 		def storicoInstance = new Storico()
 		storicoInstance.numeroPratica = praticaInstance.numeroPratica
 		storicoInstance.codiceIstanza = praticaInstance.codiceIstanza
@@ -294,6 +294,7 @@ class PraticaController {
 		storicoInstance.dataOperazione = new Date()
 		storicoInstance.areaOperatore = user?.area?.toString()
 		storicoInstance.utenteOperatore = user.toString()
+		storicoInstance.allegato = allegato
 		//storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
 		return storicoInstance?.save()
 	}

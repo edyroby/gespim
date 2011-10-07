@@ -1,4 +1,5 @@
 
+<%@page import="it.solvingteam.gespim.tipologiche.TipoOperazione"%>
 <g:javascript src="ajaxify/jquery-1.2.6.min.js" />
 <g:javascript src="ajaxify/jquery.ajaxify.min.js" />
 <script type="text/javascript">
@@ -34,6 +35,11 @@ $(function() {
 					<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 	
 						<td>
+							<g:if test="${storicoInstance.tipoOperazione == it.solvingteam.gespim.tipologiche.TipoOperazione.findByCodice(TipoOperazione.COD_DECRETO_EMESSO)}">
+							     <g:link action="apriAllegato" controller="storico" params="[idDoc:storicoInstance.allegato.id,id:storicoInstance.id]">
+											<img src="/gespim/images/pdf.png" border="0" alt="Visualizza" >
+								</g:link>
+							</g:if>
 							${fieldValue(bean: storicoInstance.tipoOperazione, field: "descrizione")}
 						</td>
 						<td>
