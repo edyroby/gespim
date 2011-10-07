@@ -8,6 +8,8 @@ class TipoOperazione {
 	static final String COD_ASSEGNAZIONE = "TOP001"
 	static final String COD_RIMOZIONE_ASSEGNAZIONE = "TOP002"
 	static final String COD_PRESA_IN_CARICO = "TOP003"
+	static final String COD_DECRETO_EMESSO = "TOP004"
+	
 
     static constraints = {
 		codice(blank:false,unique:true)

@@ -11,7 +11,9 @@ import it.solvingteam.gespim.security.Ruolo;
 import it.solvingteam.gespim.tipologiche.StatoPratica;
 import it.solvingteam.gespim.tipologiche.TipoPratica;
 import it.solvingteam.gespim.tipologiche.TipologiaLegale;
+import it.solvingteam.gespim.tipologiche.TipoOperazione;
 import it.solvingteam.gespim.storico.Storico;
+import it.solvingteam.gespim.docobj.DocumentObject;
 
 class PraticaController {
 
@@ -211,7 +213,8 @@ class PraticaController {
 		}
 		
 		def parametersList = []
-		listaPratiche?.each{pratica ->
+		byte [] singleSave
+		listaPratiche?.eachWithIndex{pratica,index ->
 			def beneficiario = pratica.beneficiari?.toArray()[0]
 			parametersList << [
 					Logo: logo,
@@ -235,13 +238,39 @@ class PraticaController {
 					DataAtto : new Date(),
 					RigaFirma1 : "Santoriello Ferdinando"
 					]
+			
+			
+			
+			//DA MODIFICARE
+			def reportDefTemp = new JasperReportDef(
+				name:"Art10Bis2",
+				fileFormat:JasperExportFormat.PDF_FORMAT,
+				reportData:[parametersList[index]],
+				parameters:[:]
+			)
+			//TODO : NE GENERA DUE
+			singleSave = jasperService.generateReport(reportDefTemp).toByteArray()
+			DocumentObject docObj = new DocumentObject(idDocumentale:1,docName:"Articolo 10",dataCreazione:new Date(),fileAllegatoByteArray:singleSave)
+			// TODO : DA RIVEDERE
+			pratica.documenti?.each{
+				it.delete()
 			}
+			pratica.documenti?.clear()
+			pratica.addToDocumenti(docObj)
+			registraEmissioneDecreto(pratica,user)
+			//FINE
+		}
 		def reportDef = new JasperReportDef(
 			name:"Art10Bis2",
 			fileFormat:JasperExportFormat.PDF_FORMAT,
 			reportData:parametersList,
 			parameters:[:]
 		)
+		
+		/*
+		 * DocumentObject docObj = new DocumentObject(idDocumentale:result,docName:fileName,dataCreazione:new Date(),fileAllegatoByteArray:auc.allegati)
+			argPariOppInstance.addToDocumentObject(docObj)
+		 */
 		
 		def outputStream = response.getOutputStream()
 		byte[] bytes = jasperService.generateReport(reportDef).toByteArray()
@@ -253,6 +282,43 @@ class PraticaController {
 		outputStream.flush()
 		outputStream.close()
 		
+		
+	}
+	
+	private Storico registraEmissioneDecreto(praticaInstance,user){
+		def storicoInstance = new Storico()
+		storicoInstance.numeroPratica = praticaInstance.numeroPratica
+		storicoInstance.codiceIstanza = praticaInstance.codiceIstanza
+		storicoInstance.codiceQuestura = praticaInstance.codiceQuestura
+		storicoInstance.tipoOperazione = TipoOperazione.findByCodice(TipoOperazione.COD_DECRETO_EMESSO)
+		storicoInstance.dataOperazione = new Date()
+		storicoInstance.areaOperatore = user?.area?.toString()
+		storicoInstance.utenteOperatore = user.toString()
+		//storicoInstance.areaAssegnataria = assegnazionePraticaInstance.areaCompetenza?.toString()
+		return storicoInstance?.save()
+	}
+	
+	def apriAllegato = {
+		
+		def praticaInstance = Pratica.get(params.id)
+		if (!praticaInstance) {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'pratica.label', default: 'Pratica'), params.id])}"
+			redirect(action: "search")
+			return
+		}
+		
+		DocumentObject docObj = DocumentObject.get(params.idDoc)
+		if (!praticaInstance.documenti || !praticaInstance.documenti.contains(docObj)) {
+			flash.message = "Documento non trovato."
+			redirect(action: "search")
+			return
+		}
+		
+		
+		response.setContentType("application/octet-stream")
+		response.setHeader("Content-disposition", "attachment;filename=${docObj.docName}.pdf")
+		
+		response.outputStream << docObj.fileAllegatoByteArray
 		
 	}
 

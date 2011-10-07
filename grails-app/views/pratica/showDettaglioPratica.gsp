@@ -105,6 +105,19 @@
 		                        <td valign="top">${praticaInstance?.tipoPratica?.encodeAsHTML()}</td>
 		                        
 		                    </tr>
+		                     <tr>
+		                        <td valign="top">Decreti Emessi</td>
+		                        
+		                        <td valign="top">
+		                        	 <g:each in="${praticaInstance?.documenti}" status="i" var="doc">
+										<g:link action="apriAllegato" controller="pratica" params="[idDoc:doc.id,id:praticaInstance.id]">
+											<img src="/gespim/images/pdf.png" border="0" alt="Visualizza" > Apri Articolo 10 Bis
+										</g:link><br>
+									</g:each>
+								</td>
+		                        
+		                    </tr>
+		                    
 		                   
 		                </tbody>
 		            </table>

@@ -27,6 +27,26 @@ $(document).ready(function() {
 
     $('#calendar').fullCalendar({
         // put your options and callbacks here
+        monthNames:["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre",
+                    "Ottobre","Novembre","Dicembre"],
+        monthNamesShort:["Gen","Feb","Mar","Apr","Mag","Giu","Lug","Ago","Set",
+                    "Ott","Nov","Dic"],
+        dayNames:["Domenica","Luned&igrave;","Marted&igrave;","Mercoled&igrave;","Gioved&igrave;","Venerd&igrave;","Sabato"],
+        dayNamesShort:["Dom","Lun","Mar","Mer","Gio","Ven","Sab"],
+        firstDay:1,
+        minTime: 6,
+        maxTime: 19,
+        columnFormat:{
+				month:'ddd',
+				week:'ddd d/M',
+				day: 'dddd d/M'
+            },
+        buttonText:{
+			today:'oggi',
+			month:'mese',
+			week:'settimana',
+			day:'giorno'
+            },
         ignoreTimezone: false,
         dayClick: function(date, allDay, jsEvent, view) {
             if (allDay) {
@@ -73,7 +93,7 @@ $(document).ready(function() {
     var start = $('#start')
     $('#dialog-form').dialog({
                 autoOpen: false,
-                height: 500,
+                height: 400,
                 width: 500,
                 modal: true,
                 buttons: {
@@ -85,7 +105,6 @@ $(document).ready(function() {
                                                            note: description.val()},
                                                     contentType: 'application/json',
                                                     success: function(data, textStatus, jqXHR) {
-                                                        alert('ok')
                                                         $('#dialog-form').dialog('close')
                                                         $('#calendar').fullCalendar('refetchEvents')
                                                     }

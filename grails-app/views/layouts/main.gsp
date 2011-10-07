@@ -17,6 +17,8 @@
 				<li><a href="#" target="_self" title="Protocollo">Protocollo</a></li>
 
 				<li><a href="#" target="_self" title="Assegna">Assegnazioni</a></li>
+				
+				<li><a href="${createLink(controller:'appuntamenti')}" target="_self" title="Stampa">Convocazioni</a></li>
 
 				<li><a href="${createLink(controller:'pratica',action:'searchStampa')}" target="_self" title="Stampa">Stampa</a></li>
 				 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
