@@ -53,7 +53,7 @@ $(function() {
 						</td>
 	
 						<td>
-							${fieldValue(bean: storicoInstance, field: "presaInCarico")}
+							${storicoInstance?.presaInCarico?'SI':'NO'}
 						</td>
 						<td>
 							${fieldValue(bean: storicoInstance, field: "dataPresaInCarico")}
