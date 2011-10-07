@@ -74,8 +74,10 @@
         
         <div class="buttons_multipli">
                 <g:actionSubmit id="mysubmit"  action="confermaPresaInCaricoMassiva" value="Conferma" />
-        
+               <a href="#">Indietro</a>
         </div>
+         
+        
       </g:form>
       </div>
    </div>

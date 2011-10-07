@@ -28,13 +28,14 @@ class PraticaController {
 	}
 
 	def search = {
+		[current:"cerca"]
 	}
 
 	def results = {PraticaCommand cmd ->
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		def user = springSecurityService.currentUser
 		def listaPratiche = Pratica.cercaPratiche(cmd,user,params)
-		[listaPratiche:listaPratiche,listaPraticheTotal:listaPratiche.totalCount]
+		[current:"cerca",listaPratiche:listaPratiche,listaPraticheTotal:listaPratiche.totalCount]
 	}
 	
 	def list = {
@@ -77,7 +78,7 @@ class PraticaController {
 			redirect(action: "results")
 			return
 		}
-		[praticaInstance: praticaInstance,authorized:isAuthorizedForPraticaOrLegale(praticaInstance,springSecurityService.currentUser)]
+		[current:"cerca",praticaInstance: praticaInstance,authorized:isAuthorizedForPraticaOrLegale(praticaInstance,springSecurityService.currentUser)]
 	}
 
 	//controllo se la pratica risulta assegnata al mio ufficio
@@ -180,6 +181,7 @@ class PraticaController {
 	}
 	
 	def searchStampa = {
+		[current:"stampa"]
 	}
 	
 	def resultsForStampa = {PraticaCommand cmd ->

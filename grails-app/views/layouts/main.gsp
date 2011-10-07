@@ -12,17 +12,27 @@
         
         <div id="header"><img src="${resource(dir:'images',file:'emblema_header.png')}" alt="logo Sana"/></div>
     	 <ul id="menu">
-		<li><a href="#" target="_self" title="Ricerca Pratiche" class="current">Ricerca Pratiche</a></li>
+    	  <g:if test="${current == 'cerca'}">
+    	    <li><a title="Ricerca Pratiche" class="current"  href="${createLink(uri: '/')}"><g:message code="default.menu.ricercaPratiche.label"/></a></li>
+    	  </g:if>
+    	   <g:elseif test="${current != 'cerca'}">
+     			<li><a title="Ricerca Pratiche" href="${createLink(uri: '/')}"><g:message code="default.menu.ricercaPratiche.label"/></a></li>
+			</g:elseif>
+		
 
 				<li><a href="#" target="_self" title="Protocollo">Protocollo</a></li>
 
 				<li><a href="#" target="_self" title="Assegna">Assegnazioni</a></li>
+
 				
 				<li><a href="${createLink(controller:'appuntamenti')}" target="_self" title="Stampa">Convocazioni</a></li>
 
-				<li><a href="${createLink(controller:'pratica',action:'searchStampa')}" target="_self" title="Stampa">Stampa</a></li>
-				 <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-
+            <g:if test="${current == 'stampa'}">
+            <li><a class="current" href="${createLink(controller:'pratica',action:'searchStampa')}" target="_self" title="Stampa">Stampa</a></li>
+            </g:if>
+            <g:elseif test="${current != 'stampa'}">
+     			<li><a href="${createLink(controller:'pratica',action:'searchStampa')}" target="_self" title="Stampa">Stampa</a></li>
+			</g:elseif>
 				<li><g:link class="show" controller="logout" action="index" >Logout</g:link></li>
 			</ul>
         <g:layoutBody />

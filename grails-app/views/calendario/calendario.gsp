@@ -1,7 +1,8 @@
 <html>
 <head>
+ 		<meta name="layout" content="main" />
+        <title>SANA - Sportello Unico Immigrazione - Roma (Convocazioni)</title>
 <style>
-		body { font-size: 100%; }
 		label, input { display:block; }
 		input.text { margin-bottom:12px; width:95%; padding: .4em; }
 		fieldset { padding:0; border:0; margin-top:25px; }
@@ -11,9 +12,22 @@
 		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
 		.ui-dialog .ui-state-error { padding: .3em; }
 		.validateTips { border: 1px solid transparent; padding: 0.3em; }
+		body {
+			margin-top: 40px;
+			text-align: center;
+			font-size: 13px;
+			font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		}
+
+		#calendar {
+			width: 900px;
+			margin: 0 auto;
+		}
 	</style>
+<link rel='stylesheet' type='text/css' href='${resource(dir:'css/cupertino', file:'theme.css')}' />
 <link rel='stylesheet' type='text/css' href='${resource(dir:'css', file:'fullcalendar.css')}' />
 <link rel='stylesheet' type='text/css' href='${resource(dir:'css/redmond', file:'jquery-ui-1.8.13.custom.css')}' />
+
 <g:javascript src='jQuery/jquery-1.5.1.min.js'/>
 <g:javascript src='jQuery/jquery-ui-1.8.12.custom.min.js'/>
 <g:javascript src='fullcalendar.min.js'/>
@@ -123,13 +137,13 @@ $(document).ready(function() {
     <div id="calendar"></div>
     
     <div id="dialog-form" title="Create new event">
-        <p class="validateTips">All form fields are required.</p>
+        <p class="validateTips">Tutti i campi sono richiesti</p>
 
         <form>
         <fieldset>
-            <label for="title">Title</label>
+            <label for="title">Titolo</label>
             <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" />
-            <label for="title">Description</label>
+            <label for="title">Descrizione</label>
             <textarea name="description" id="description" cols="40" rows="5" class="ui-widget-content ui-corner-all"></textarea>
             </fieldset>
         </form>

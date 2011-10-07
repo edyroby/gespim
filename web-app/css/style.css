@@ -1,5 +1,5 @@
 *{
-	margin:0;
+	/*margin:0;*/
 	padding:0;
 	list-style:none;
 }
@@ -176,21 +176,18 @@ textarea {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
 }
 
-tr {
+#table tr {
 
 	width: 200px;
 	background:#eee;
 		
 }
-td {
+#table td {
 	
 	width: auto;
 	background:#eee;
 	text-align: center;
 	background:url(../images/td.jpg) top repeat-x;
-}
-.w5pc {
-	width: 200px;
 }
 
  .sortable {
@@ -212,9 +209,7 @@ td {
 	background-image: url("../images/sortable.png");
 	background-position: 0 -284px
 }
-.w12pc {
-	width: 200px;
-}
+
 
 .name {
 	
@@ -411,11 +406,7 @@ p {
 	background:url(../images/sfondo01_hover.jpg) top no-repeat;
 }
 */
-td {
 
-	width: 30px;
-	border:1px;	
-}
 
 .etichetta {
     padding-top: 10px;
@@ -568,28 +559,25 @@ ul#menu_footer li a.current{
 	border-spacing: 0;
 	padding: 0.3em;
 }
-
-th:hover {
-	background-image: url("../images/sortable.png");	
+.risultati th {	
+	padding: 0.2em;
+	text-align: center;
+	border-bottom: 1px solid #000000;
+	border-top:1px solid;
+	border-left:1px solid;
+	border-right:1px solid;
+	width: 200px;
+	background-color: #3A94C9;
+		
 }
 
-tr {
-	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
-	color: #000;
-	height: 30px;
-	
-}
 
-td {
-	font: 11px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
-	width: auto;
-	background-color: #FFFFFF;
-}
 
 .risultati tr {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
 	color: #000;
 	height: 30px;
+	background:#eee;
 	
 }
 .risultati td {
@@ -600,6 +588,11 @@ td {
 	border-right:1px solid;
 	padding: 0.2em;
 	text-transform: capitalize;
+	text-align: center;
+}
+
+th:hover {
+	background-image: url("../images/sortable.png");	
 }
 
 #tabs ul{
@@ -650,10 +643,12 @@ label {
 
 .button{
 	text-align: center;
+	padding:5px;
 }
 
 .button_incarico{
 	text-align: center;
+	padding:5px;
 }
 
 .button_incarico input{
@@ -672,7 +667,7 @@ label {
 .message{
 	color: #006dba;
 	text-align: center;
-	width:350px;
+	width:375px;
 	margin:auto;
 	padding:2px;
 	height: 20px;
@@ -685,27 +680,15 @@ label {
 	color: #cc0000;
 	text-align: center;
 	border:1px solid;
-	width:250px;
+	width:375px;
 	margin:auto;
 	
 }
 
-.risultati th {
-	
-	padding: 0.2em;
-	text-align: center;
-	border-bottom: 1px solid #000000;
-	border-top:1px solid;
-	border-left:1px solid;
-	border-right:1px solid;
-	width: 200px;
-	background-color: #3A94C9;
-	
-	
-}
+
 
 #wrapper{
-	height: 370px;
+	
 }
 
 .risultati .checkbox_table{
@@ -748,6 +731,7 @@ label {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
 	color: #000;
 	height: 30px;
+	background:#eee;
 	
 }
 .table_detail_datore_lavoratore td {
@@ -756,6 +740,7 @@ label {
 	border:1px solid;
 	padding: 0.2em;
 	text-transform: capitalize;
+	text-align: center;
 }
 
 .tabel_storico{
@@ -790,6 +775,7 @@ label {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
 	color: #000;
 	height: 30px;
+	background:#eee;
 	
 }
 .tabel_storico td {
@@ -798,6 +784,7 @@ label {
 	border:1px solid;
 	padding: 0.2em;
 	text-transform: capitalize;
+	text-align: center;
 }
 
 #modifica_pratica{
@@ -825,6 +812,7 @@ label {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
 	color: #000;
 	height: 30px;
+	background:#eee;
 	
 }
 .table_modifica_pratica td {
@@ -833,6 +821,7 @@ label {
 	border:1px solid;
 	padding: 0.2em;
 	text-transform: capitalize;
+	text-align: center;
 }
 
 .table_assegnazione_pratica{
@@ -853,6 +842,7 @@ label {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;	
 	color: #000;
 	height: 30px;
+	background:#eee;
 	
 }
 .table_assegnazione_pratica td {
@@ -861,6 +851,7 @@ label {
 	border:1px solid;
 	padding: 0.2em;
 	text-transform: capitalize;
+	text-align:center;
 }
 
 .table_assegnazione_pratica input{
@@ -934,6 +925,8 @@ label {
     overflow: hidden;
     padding: 7px 3px;
     text-align: center;
+    margin:auto;
+    width:89%;
 }
 .paginateButtons a {
     background: #fff;
@@ -948,4 +941,48 @@ label {
 }
 
 
+/* PAGINATION STORICO*/
+
+.paginateButtons_storico {
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    border: 1px solid #ccc;
+    border-top: 0;
+    color: #666;
+    font-size: 10px;
+    overflow: hidden;
+    padding: 7px 3px;
+    text-align: center;
+    margin:auto;
+    width:98%;
+}
+.paginateButtons_storico a {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-color: #ccc #aaa #aaa #ccc;
+    color: #666;
+    margin: 0 3px;
+    padding: 2px 6px;
+}
+.paginateButtons_storico span {
+    padding: 2px 3px;
+}
+
+
+.buttons_multipli a{
+	 background:#ff9900;
+	 color:#fff;
+	 font-weight:bold;
+	 background:url(../images/submit.png) top no-repeat;
+	 border:1px solid;
+	 text-align:center;
+	 text-decoration: none;
+	 padding:8px 3px 4px 3px;
+	
+}
+
+.risultati img {
+	
+	border:none;
+	
+}
 
