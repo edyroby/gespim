@@ -5,3 +5,7 @@ stacktrace.log
 target
 *.swp
 web-app/WEB-INF/classes/
+
+web-app/.DS_Store
+
+web-app/images/.DS_Store
