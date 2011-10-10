@@ -173,6 +173,7 @@ class PraticaController {
 	}
 	
 	def presaInCarico = {
+		println ".................."+params
 		redirect(controller:'assegnazionePratica',action:'presaInCarico',params:params)
 	}
 	

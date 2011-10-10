@@ -15,9 +15,41 @@
 				$( "#tabs" ).tabs({ajaxOptions:{cache:false},cache:false});
 			});
 		</script>
+		 <script>
+        	$(function() { 
+			
+				var $dialog = $( "#dialog-confirm" ).dialog({
+					autoOpen: false,
+					resizable: false,
+					height:150,
+					modal: true,
+					buttons: {
+						"Confermare Operazione?": function() {
+							$( this ).dialog( "close" );
+							$("#mio_form").submit();
+						},
+						Cancel: function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
+
+
+				$('#miobutton').click(function() {
+					$dialog.dialog('open');
+					// prevent the default action, e.g., following a link
+				});
+				
+			});
+		</script>
         
     </head>
     <body>
+    	<%---------------------- FINESTRA CONFIRM ---------------------%>
+    	<div id="dialog-confirm" title="Conferma operazione?">
+			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Confermare Operazione?</p>
+		</div>
+		<%---------------------- FINE FINESTRA CONFIRM ---------------------%>
          <%-- 
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></span>
@@ -165,12 +197,13 @@
 </div>
            <g:if test="${authorized}"> 
 	            <div class="buttons_multipli">
-	                <g:form>
+	                <g:form name="mio_form">
 	                    <g:hiddenField name="id" value="${praticaInstance?.id}" />
 	                    <g:actionSubmit id="mysubmit" action="edit" value="Modifica" />
 	                    <g:actionSubmit id="mysubmit" action="assegnazione" value="Assegnazione" />
-	                    <g:actionSubmit id="mysubmit" action="presaInCarico" value="Presa in carico" onclick="return confirm('Confermare l\\'operazione di presa in carico?')"/>
-	                    <g:actionSubmit id="mysubmit" action="xxx" value="Convocazione" />
+	                    <input type="button" id="miobutton"  value="Presa in carico" />
+	                    <input id="actionID" type="hidden" name="_action_presaInCarico" value="_action_presaInCarico" >
+	                    <g:link id="link" action="presaInCarico" value="Convocazione" >adsfadfa</g:link>
 	                    <g:actionSubmit id="mysubmit" action="xxx" value="Emetti Atto" />
 	                    <g:actionSubmit id="mysubmit" action="xxx" value="Evidenza" />
 	                    <g:actionSubmit id="mysubmit" action="xxx" value="Stampa" />

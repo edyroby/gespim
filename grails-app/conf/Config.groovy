@@ -11,6 +11,47 @@ grails.config.locations = [MyConfig]
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+
+/*
+* Definizione di un file di configurazione esterno
+*/
+def ENV_NAME = "GESPIM_CONFIG_PATH"
+println "--------------------------------------------------------"
+// 1: A command line option should override everything.
+// Test by running:
+// grails -Dgepam_import.config.location=C:\path\to\config_file.groovy run-app
+// or
+// grails -Dgepam_import.config.location=C:\path\to\config_file.properties run-app
+if (System.getProperty(ENV_NAME) && new File(System.getProperty(ENV_NAME)).exists()) {
+	println "Including configuration file specified on command line: " + System.getProperty(ENV_NAME)
+	grails.config.locations << "file:" + System.getProperty(ENV_NAME)
+}
+// 2: If this is a developer machine, then they will have their own config and
+// I should use that.
+else if (new File("${userHome}/.grails/${appName}-config.groovy").exists()) {
+	println "*** User defined config: file:${userHome}/.grails/${appName}-config.groovy. ***"
+	grails.config.locations << "file:${userHome}/.grails/${appName}-config.groovy"
+}
+// 3: Most QA and PROD machines should define a System Environment variable
+// that will define where we should look.
+else if (System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
+	println("Including System Environment configuration file: " + System.getenv(ENV_NAME))
+	grails.config.locations << "file:" + System.getenv(ENV_NAME)
+}
+// 4: Last resort is looking for a properties based configuration on the developer
+// machine.
+else if (new File("${userHome}/.grails/${appName}-config.properties").exists()) {
+	println "*** User defined config: file:${userHome}/.grails/${appName}-config.properties. ***"
+	grails.config.locations << "file:${userHome}/.grails/${appName}-config.properties"
+}
+// 5: Houston, we have a problem!
+else {
+	println "*** No external configuration file defined. ***"
+	println "*** No external configuration file defined. ***"
+	println "*** No external configuration file defined. ***"
+}
+println "...............config locations: " +grails.config.locations
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false

@@ -10,7 +10,7 @@
         <script>
         	$(function() { 
 			
-				$( "#dialog-confirm" ).dialog({
+				var $dialog = $( "#dialog-confirm" ).dialog({
 					autoOpen: false,
 					resizable: false,
 					height:140,
@@ -30,7 +30,7 @@
 				$('#miobutton').click(function() {
 					$dialog.dialog('open');
 					// prevent the default action, e.g., following a link
-					return result;
+					
 				});
 				
 			});
