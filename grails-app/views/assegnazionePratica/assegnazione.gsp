@@ -12,21 +12,22 @@
     <body>
        
         <div class="body">
-            <br />
             <g:if test="${flash.message}">
+            	<br />
             	<div class="message">${flash.message}</div>
             	<br />
             </g:if>
-            
             <g:if test="${flash.error}">
+            	<br />
             	<div class="errors">${flash.error}</div>
             	<br />
             </g:if>
             <g:hasErrors bean="${praticaInstance}">
             <div class="errors">
+            	<br />
                 <g:renderErrors bean="${praticaInstance}" as="list" />
                 <br />
-           </div>
+           	</div>
             </g:hasErrors>
             
              <div id="assegnazione_pratica">

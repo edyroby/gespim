@@ -22,17 +22,19 @@
         </div>
         --%>
         <div class="body">
-        <br />
             <g:if test="${flash.message}">
+            	<br />
             	<div class="message">${flash.message}</div>
             	<br />
             </g:if>
             <g:if test="${flash.error}">
+            	<br />
             	<div class="errors">${flash.error}</div>
             	<br />
             </g:if>
             <g:hasErrors bean="${praticaFlussiStagionaliInstance}">
             <div class="errors">
+            	<br />
                 <g:renderErrors bean="${praticaFlussiStagionaliInstance}" as="list" />
                 <br />
             </div>
