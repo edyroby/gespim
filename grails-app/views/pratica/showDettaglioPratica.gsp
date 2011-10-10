@@ -29,15 +29,16 @@
         --%>
         <div class="body">
             <!-- <h2>Pratica Nr: ${praticaInstance.numeroPratica }</h2> -->
-            <br />
+           
             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            <br />
+	            <br />
+	            <div class="message">${flash.message}</div>
+	            <br />
             </g:if>
-            
             <g:if test="${flash.error}">
-            <div class="errors">${flash.error}</div>
-            <br />
+	            <br />
+	            <div class="errors">${flash.error}</div>
+	            <br />
             </g:if>
 <div id="content_tabs">
   

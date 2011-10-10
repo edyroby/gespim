@@ -111,7 +111,7 @@ $(document).ready(function() {
                 width: 500,
                 modal: true,
                 buttons: {
-                            "Create event": function() {
+                            "Salva": function() {
                                                 $.ajax({
                                                     url:'${createLink(controller:'appuntamento', action:'saveAppuntamento')}',
                                                     data: {oggetto: title.val(),
@@ -136,8 +136,8 @@ $(document).ready(function() {
 <body>
     <div id="calendar"></div>
     
-    <div id="dialog-form" title="Create new event">
-        <p class="validateTips">Tutti i campi sono richiesti</p>
+    <div id="dialog-form" title="Appuntamento">
+        <p class="validateTips">Tutti i campi sono obbligatori</p>
 
         <form>
         <fieldset>
