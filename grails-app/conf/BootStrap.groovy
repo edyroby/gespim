@@ -16,7 +16,7 @@ class BootStrap {
 
     def init = { servletContext ->
 		String webdir = servletContext.getRealPath("/")
-		
+		/*
 		if (GrailsUtil.environment != 'test') {
             prepareTipologiche(webdir)
 			prepareUserRole()
@@ -24,15 +24,47 @@ class BootStrap {
             fixtureLoader.load('richiedenti')
             fixtureLoader.load('appuntamenti_dev')
         }
+        */
 
     }
     def destroy = {
     }
 	
 	private void prepareUserRole(){
-		def adminRole = new Ruolo(authority: Ruolo.ROLE_ADMIN).save(flush: true)
-		def userRole = new Ruolo(authority: Ruolo.ROLE_USER).save(flush: true)
-		def protocolloRole = new Ruolo(authority: Ruolo.ROLE_PROTOCOLLO).save(flush: true)
+		def adminRole = Ruolo.findByAuthority(Ruolo.ROLE_ADMIN)
+		if (!adminRole) {
+		 adminRole = new Ruolo(authority: Ruolo.ROLE_ADMIN, name: 'Admin')
+		 adminRole.id = Ruolo.ROLE_ADMIN
+		 adminRole.save(failOnError: true)
+		}
+		
+		def userRole = Ruolo.findByAuthority(Ruolo.ROLE_USER)
+		if (!userRole) {
+		 userRole = new Ruolo(authority: Ruolo.ROLE_USER, name: 'User')
+		 userRole.id = Ruolo.ROLE_USER
+		 userRole.save(failOnError: true)
+		}
+		
+		def protocolloRole = Ruolo.findByAuthority(Ruolo.ROLE_PROTOCOLLO)
+		if (!protocolloRole) {
+		 protocolloRole = new Ruolo(authority: Ruolo.ROLE_PROTOCOLLO, name: 'Protocollo')
+		 protocolloRole.id = Ruolo.ROLE_PROTOCOLLO
+		 protocolloRole.save(failOnError: true)
+		}
+		
+		def areaLegaleRoleResp = Ruolo.findByAuthority(Ruolo.ROLE_RESPONSABILE_AREA_LEGALE)
+		if (!areaLegaleRoleResp) {
+		 areaLegaleRoleResp = new Ruolo(authority: Ruolo.ROLE_RESPONSABILE_AREA_LEGALE, name: 'Responsabile Area Legale')
+		 areaLegaleRoleResp.id = Ruolo.ROLE_RESPONSABILE_AREA_LEGALE
+		 areaLegaleRoleResp.save(failOnError: true)
+		}
+		
+		def areaLegaleRoleUser = Ruolo.findByAuthority(Ruolo.ROLE_USER_AREA_LEGALE)
+		if (!areaLegaleRoleUser) {
+		 areaLegaleRoleUser = new Ruolo(authority: Ruolo.ROLE_USER_AREA_LEGALE, name: 'Utente Area Legale')
+		 areaLegaleRoleUser.id = Ruolo.ROLE_USER_AREA_LEGALE
+		 areaLegaleRoleUser.save(failOnError: true)
+		}
   
 		def testUser = new Utente(username: 'admin', enabled: true,
 			 password: '222',nome:'admin',cognome:'adminnn')
@@ -68,8 +100,10 @@ class BootStrap {
   
 		UtenteRuolo.create testUser, adminRole, true
 		UtenteRuolo.create testUser, protocolloRole, true
+		UtenteRuolo.create testUser, areaLegaleRoleResp, true
 		UtenteRuolo.create classicUser, userRole, true
 		UtenteRuolo.create testUser2, userRole, true
+		UtenteRuolo.create testUser2, areaLegaleRoleUser, true
 		UtenteRuolo.create testUser3, userRole, true
 		
 		RequestMap.findByUrlAndConfigAttribute('/**', 'IS_AUTHENTICATED_FULLY')?:new RequestMap(url:'/**', configAttribute:'IS_AUTHENTICATED_FULLY').save()

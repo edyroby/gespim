@@ -49,8 +49,11 @@ class AssegnazionePraticaController {
 	}
 
 	def confermaAssegnazione = {
-
+		redirect(controller:'iterAssegnaziPresaInCaricoPratica',action: 'start')
+	
+/*
 		try {
+			
 			def praticaInstance = Pratica.get(params.id)
 			assegnazionePraticaService.processAssegnazioni(praticaInstance,params)
 			flash.message = "Assegnazione effettuata con successo."
@@ -60,7 +63,7 @@ class AssegnazionePraticaController {
 			flash.error = ex.message
 			render(view:'assegnazione',model:[praticaInstance:ex.praticaInstance,areeMap:buildAree(ex.praticaInstance)])
 		}
-
+*/
 	}
 	
 	def backToDettaglioPratica = {

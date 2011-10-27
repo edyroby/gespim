@@ -153,3 +153,46 @@ grails.plugins.springsecurity.securityConfigType = 'Requestmap'
 
 jasper.dir.reports = '/reports'
 
+
+// Added by the Grails Activiti plugin:
+activiti {
+    processEngineName = "activiti-engine-default"
+	  databaseType = "mysql" 
+	  deploymentName = appName
+	  deploymentResources = ["file:./grails-app/conf/**/*.bpmn*.xml", 
+	                         "file:./grails-app/conf/**/*.png", 
+	                         "file:./src/taskforms/**/*.form"]
+	  jobExecutorActivate = false
+	  mailServerHost = "smtp.gmail.com"
+	  mailServerPort = "465"
+	  mailServerUsername = ""
+	  mailServerPassword = ""
+	  mailServerDefaultFrom = "username@yourserver.com"
+	  history = "audit" // "none", "activity", "audit" or "full"
+	  sessionUsernameKey = "username"
+	  useFormKey = true
+}
+
+environments {
+    development {
+        activiti {
+			  processEngineName = "activiti-engine-dev"
+			  databaseSchemaUpdate = true // true, false or "create-drop"	  
+        }
+    }
+    test {
+        activiti {
+			  processEngineName = "activiti-engine-test"
+			  databaseSchemaUpdate = true
+	      mailServerPort = "5025"			  
+        }
+    }	
+    production {
+        activiti {
+			  processEngineName = "activiti-engine-prod"
+			  databaseSchemaUpdate = false
+			  jobExecutorActivate = true
+        }
+    }
+}	
+

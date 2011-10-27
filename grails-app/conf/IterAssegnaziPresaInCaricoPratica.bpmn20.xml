@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="iterAssegnaziPresaInCaricoPratica" name="IterAssegnaziPresaInCaricoPratica">
+    <documentation>Place documentation for the 'IterAssegnaziPresaInCaricoPratica' process here.</documentation>
+    <startEvent id="start" name="Start"></startEvent>
+    
+    
+    <userTask id="smistamento" name="Smistamento ad utente"  activiti:candidateUsers="${listaUtenti}">
+    </userTask>
+    
+    <sequenceFlow id="flow1" name="" sourceRef="start" targetRef="smistamento"></sequenceFlow>
+    
+    <userTask id="esamefascicolo" name="Esame Fascicolo Elettronico" >
+    	<humanPerformer>
+				<resourceAssignmentExpression>
+					<formalExpression>${username}</formalExpression>
+				</resourceAssignmentExpression>
+			</humanPerformer>
+    </userTask>
+    <sequenceFlow id="flow2" name="" sourceRef="smistamento" targetRef="esamefascicolo"></sequenceFlow>
+    
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow3" name="" sourceRef="esamefascicolo" targetRef="exclusivegateway1">
+    </sequenceFlow>
+    <sequenceFlow id="flow4" name="" sourceRef="exclusivegateway1" targetRef="smistamento">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!isPertinente}]]></conditionExpression>
+    </sequenceFlow>
+    
+    <userTask id="lavorazione" name="Lavorazione" activiti:assignee="${username}">
+    
+    </userTask>
+    <sequenceFlow id="flow5" name="" sourceRef="exclusivegateway1" targetRef="lavorazione">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isPertinente}]]></conditionExpression>
+    </sequenceFlow>
+    
+    <endEvent id="finelavorazione" name="Fine Lavorazione"></endEvent>
+    <sequenceFlow id="flow6" name="" sourceRef="lavorazione" targetRef="finelavorazione"></sequenceFlow>
+  </process>
+</definitions>

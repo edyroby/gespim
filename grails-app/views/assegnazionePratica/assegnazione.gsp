@@ -34,7 +34,7 @@
              <h3>Assegnazione Pratica</h3>
              
             <g:form method="post" >
-                <g:hiddenField name="id" value="${praticaInstance?.id}" />
+                <g:hiddenField name="idPratica" value="${praticaInstance?.id}" />
                 <g:hiddenField name="version" value="${praticaInstance?.version}" />
                 <div class="dialog">
                     <table class="table_assegnazione_pratica">
