@@ -22,7 +22,7 @@
 
 				<li><a href="#" target="_self" title="Protocollo">Protocollo</a></li>
 
-				<li><a href="#" target="_self" title="Assegna">Assegnazioni</a></li>
+				<li><a href="${createLink(controller:'task',action:'unassignedTaskList')}" target="_self" title="Assegna">Assegnazioni</a></li>
 
 				
 				<li><a href="${createLink(controller:'appuntamenti')}" target="_self" title="Stampa">Convocazioni</a></li>

@@ -16,7 +16,7 @@ environments {
     development {
         dataSource {
 			logSql = true
-            dbCreate = "create" // one of 'create', 'create-drop','update'
+            //dbCreate = "create" // one of 'create', 'create-drop','update'
             //url = "jdbc:hsqldb:mem:devDB"
 			url = "jdbc:mysql://127.0.0.1:3306/db_sana"
         }

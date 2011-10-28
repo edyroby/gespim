@@ -49,7 +49,8 @@ class AssegnazionePraticaController {
 	}
 
 	def confermaAssegnazione = {
-		redirect(controller:'iterAssegnaziPresaInCaricoPratica',action: 'start')
+		params.remove("_action_confermaAssegnazione")
+		redirect(controller:'iterAssegnaziPresaInCaricoPratica',action: 'start',params:params)
 	
 /*
 		try {

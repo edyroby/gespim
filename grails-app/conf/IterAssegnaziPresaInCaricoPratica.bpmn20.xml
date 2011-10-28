@@ -5,7 +5,7 @@
     <startEvent id="start" name="Start"></startEvent>
     
     
-    <userTask id="smistamento" name="Smistamento ad utente"  activiti:candidateUsers="${listaUtenti}">
+    <userTask id="smistamento" name="Smistamento ad utente"  activiti:candidateUsers="${listaUtenti}" >
     </userTask>
     
     <sequenceFlow id="flow1" name="" sourceRef="start" targetRef="smistamento"></sequenceFlow>

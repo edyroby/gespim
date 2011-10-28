@@ -57,6 +57,10 @@ class IterAssegnaziPresaInCaricoPraticaController {
             [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount]
         }
     }
+	
+	def smistamento = {
+		
+	}
 
     def edit = {
         def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
