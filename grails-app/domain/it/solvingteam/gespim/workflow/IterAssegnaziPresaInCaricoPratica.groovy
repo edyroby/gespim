@@ -15,8 +15,11 @@ class IterAssegnaziPresaInCaricoPratica {
 	Date dateCreated
 	Date lastUpdated
 	Pratica pratica
+	String taskId
+	String username
 
     static constraints = {
+		area nullable:true
 		pratica nullable:true
 		note nullable:true, size:5..255
 		approvalStatus nullable:true
@@ -24,5 +27,7 @@ class IterAssegnaziPresaInCaricoPratica {
 		resendRequest nullable:true
 		dateCreated blank:false
 		lastUpdated nullable:true
+		taskId nullable:true
+		username nullable:true
     }
 }

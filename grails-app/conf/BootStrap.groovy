@@ -81,11 +81,16 @@ class BootStrap {
 		
 		def testUser2 = new Utente(username: 'legale', enabled: true,
 			 password: '222',nome:'legale',cognome:'legaleee')
+		def legale2 = new Utente(username: 'legale2', enabled: true,
+			password: '222',nome:'legale2',cognome:'legaleee2')
 		if(area2){
 			testUser2.area = area2
+			legale2.area = area2
 			area2.addToUtenti(testUser2)
+			area2.addToUtenti(legale2)
 		}
 		testUser2.save(flush: true)
+		legale2.save(flush: true)
 		area2.save(flush:true)
 		
 		def testUser3 = new Utente(username: 'flussi', enabled: true,
@@ -104,6 +109,7 @@ class BootStrap {
 		UtenteRuolo.create classicUser, userRole, true
 		UtenteRuolo.create testUser2, userRole, true
 		UtenteRuolo.create testUser2, areaLegaleRoleUser, true
+		UtenteRuolo.create legale2, areaLegaleRoleUser, true
 		UtenteRuolo.create testUser3, userRole, true
 		
 		RequestMap.findByUrlAndConfigAttribute('/**', 'IS_AUTHENTICATED_FULLY')?:new RequestMap(url:'/**', configAttribute:'IS_AUTHENTICATED_FULLY').save()

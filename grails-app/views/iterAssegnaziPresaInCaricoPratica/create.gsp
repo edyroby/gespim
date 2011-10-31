@@ -25,6 +25,7 @@
             </div>
             </g:hasErrors>
             <g:form action="save" >
+            
                 <div class="dialog">
                     <table>
                         <tbody>

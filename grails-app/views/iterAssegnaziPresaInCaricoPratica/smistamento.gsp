@@ -21,16 +21,28 @@
             </div>
             </g:hasErrors>
             <g:form method="post" >
+            <g:hiddenField name="id" value="${iterAssegnaziPresaInCaricoPraticaInstance?.id}" />
                 <g:hiddenField name="taskId" value="${params.taskId}" />
                     <table class="table_modifica_pratica">
                         <tbody>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="pratica"><g:message code="iterAssegnaziPresaInCaricoPratica.pratica.label" default="Pratica" /></label>
+                                  <label for="pratica"><g:message code="iterAssegnaziPresaInCaricoPratica.pratica.label" default="Pratica numero" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: iterAssegnaziPresaInCaricoPraticaInstance, field: 'pratica', 'errors')}">
-                                    <g:select name="pratica.id" from="${it.solvingteam.gespim.pratica.Pratica.list()}" optionKey="id" value="${iterAssegnaziPresaInCaricoPraticaInstance?.pratica?.id}" noSelection="['null': '']" />
+                                    ${iterAssegnaziPresaInCaricoPraticaInstance?.pratica?.numeroPratica}
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="username">Utente</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: iterAssegnaziPresaInCaricoPraticaInstance, field: 'username', 'errors')}">
+                                    <g:radioGroup name="username" values="${listaUtenti?.collect{it.username}}"  >
+										<p>${it.label}: ${it.radio}</p>
+									</g:radioGroup>
                                 </td>
                             </tr>
                         
@@ -42,7 +54,7 @@
                                     <g:textArea name="note" cols="40" rows="5" value="${iterAssegnaziPresaInCaricoPraticaInstance?.note}" />
                                 </td>
                             </tr>
-                        
+                        <%-- 
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="approvalStatus"><g:message code="iterAssegnaziPresaInCaricoPratica.approvalStatus.label" default="Approval Status" /></label>
@@ -69,7 +81,7 @@
                                     <g:textField name="area" value="${iterAssegnaziPresaInCaricoPraticaInstance?.area}" />
                                 </td>
                             </tr>
-                        
+                        --%>
                         </tbody>
                     </table>
                 <div class="buttons_multipli">
