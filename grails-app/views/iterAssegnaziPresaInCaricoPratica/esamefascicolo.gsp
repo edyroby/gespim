@@ -62,12 +62,18 @@
                             
                         </tr>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="iterAssegnaziPresaInCaricoPratica.area.label" default="Area" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: iterAssegnaziPresaInCaricoPraticaInstance, field: "area")}</td>
-                            
-                        </tr>
+                        <tr>
+		                        <td valign="top">Allegato</td>
+		                        
+		                        <td valign="top">
+		                        	 <g:each in="${iterAssegnaziPresaInCaricoPraticaInstance?.pratica?.documenti}" status="i" var="doc">
+										<g:link action="apriAllegato" controller="pratica" params="[idDoc:doc.id,id:iterAssegnaziPresaInCaricoPraticaInstance.pratica.id]">
+											<img src="/gespim/images/pdf.png" border="0" alt="Visualizza" > Apri Allegato
+										</g:link><br>
+									</g:each>
+								</td>
+		                        
+		                    </tr>
                     
                     </tbody>
                 </table>
