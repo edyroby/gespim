@@ -2,6 +2,8 @@ package it.solvingteam.gespim.workflow
 import java.util.Map;
 
 import it.solvingteam.gespim.security.Utente;
+import it.solvingteam.gespim.tipologiche.StatoPratica;
+import it.solvingteam.gespim.tipologiche.TipologiaLegale;
 
 import it.solvingteam.gespim.pratica.Pratica;
 
@@ -24,12 +26,9 @@ class IterAssegnaziPresaInCaricoPraticaController {
 	}
 
 	def start = {
-		params.listaUtenti = ["admin", "user"]
-		ProcessInstance pi = activitiService.startProcess(params)
-		Task task = activitiService.getUnassignedTask(session[sessionUsernameKey], pi.id)
 
 		def iterAssegnaziPresaInCaricoPraticaInstance = new IterAssegnaziPresaInCaricoPratica()
-		iterAssegnaziPresaInCaricoPraticaInstance.taskId = task.id
+		//iterAssegnaziPresaInCaricoPraticaInstance.taskId = task.id
 		iterAssegnaziPresaInCaricoPraticaInstance.pratica = Pratica.get(params.idPratica as long)
 		if (!iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
 			println "................errors "+iterAssegnaziPresaInCaricoPraticaInstance.errors
@@ -37,6 +36,10 @@ class IterAssegnaziPresaInCaricoPraticaController {
 			return
 			//TODO : gestire
 		}
+		params.listaUtenti = ["admin", "user"]
+		params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
+		ProcessInstance pi = activitiService.startProcess(params)
+		Task task = activitiService.getUnassignedTask(session[sessionUsernameKey], pi.id)
 		redirect(controller:'task',action: "unassignedTaskList")
 	}
 
@@ -84,7 +87,8 @@ class IterAssegnaziPresaInCaricoPraticaController {
 	}
 
 	def smistamento = {
-		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.findByTaskId(params.taskId)
+		println"....................smistamento"+params
+		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
 		def user = springSecurityService.currentUser
 		def listaUtenti = Utente.findAllByArea(user.area)
 		[iterAssegnaziPresaInCaricoPraticaInstance:iterAssegnaziPresaInCaricoPraticaInstance,listaUtenti:(listaUtenti-user)]
@@ -92,6 +96,12 @@ class IterAssegnaziPresaInCaricoPraticaController {
 	
 	def esamefascicolo = {
 		println "..................esamefascicolo "+params
+		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
+		[iterAssegnaziPresaInCaricoPraticaInstance:iterAssegnaziPresaInCaricoPraticaInstance]
+	}
+	
+	def lavorazione = {
+		println "..................lavorazione "+params
 		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
 		[iterAssegnaziPresaInCaricoPraticaInstance:iterAssegnaziPresaInCaricoPraticaInstance]
 	}
@@ -135,7 +145,7 @@ class IterAssegnaziPresaInCaricoPraticaController {
 					params.action="show"
 					saveTask(params)
 				}
-				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:isComplete?:null])
+				redirect(controller:'task',action: "allTaskList", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:isComplete?:null])
 			}
 			else {
 				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
@@ -148,7 +158,99 @@ class IterAssegnaziPresaInCaricoPraticaController {
 	}
 	
 	def performEsameFascicolo = {
-		/*
+		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
+		if (iterAssegnaziPresaInCaricoPraticaInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (iterAssegnaziPresaInCaricoPraticaInstance.version > version) {
+
+					iterAssegnaziPresaInCaricoPraticaInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+						message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica')]
+					as Object[], "Another user has updated this IterAssegnaziPresaInCaricoPratica while you were editing")
+					render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+					return
+				}
+			}
+ 
+
+			iterAssegnaziPresaInCaricoPraticaInstance.properties = params
+			iterAssegnaziPresaInCaricoPraticaInstance.pratica.statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
+			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
+				params.username = iterAssegnaziPresaInCaricoPraticaInstance.username
+				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"
+				/*
+				Boolean isComplete = params["performEsameFascicolo"].equals(message(code: 'default.button.complete.label', default: 'Complete'))
+				if (isComplete) {
+				*/
+					params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
+					params.isPertinente = true
+					completeTask(params)
+				/*
+				} 
+				else {
+					params.action="show"
+					saveTask(params)
+				}
+				*/
+				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
+			}
+			else {
+				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+			}
+		}
+		else {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), params.id])}"
+			redirect(controller: "task", action: "myTaskList")
+		}
+	}
+	
+	def riassegna = {
+		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
+		if (iterAssegnaziPresaInCaricoPraticaInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (iterAssegnaziPresaInCaricoPraticaInstance.version > version) {
+
+					iterAssegnaziPresaInCaricoPraticaInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+						message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica')]
+					as Object[], "Another user has updated this IterAssegnaziPresaInCaricoPratica while you were editing")
+					render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+					return
+				}
+			}
+ 
+
+			iterAssegnaziPresaInCaricoPraticaInstance.properties = params
+			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
+				params.username = iterAssegnaziPresaInCaricoPraticaInstance.username
+				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"
+				/*
+				Boolean isComplete = params["performEsameFascicolo"].equals(message(code: 'default.button.complete.label', default: 'Complete'))
+				if (isComplete) {
+				*/
+					params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
+					params.isPertinente = false
+					completeTask(params)
+				/*
+				} 
+				else {
+					params.action="show"
+					saveTask(params)
+				}
+				*/
+				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:false])
+			}
+			else {
+				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+			}
+		}
+		else {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), params.id])}"
+			redirect(controller: "task", action: "myTaskList")
+		}
+	}
+	
+	def sequestro = {
 		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
 		if (iterAssegnaziPresaInCaricoPraticaInstance) {
 			if (params.version) {
@@ -163,20 +265,14 @@ class IterAssegnaziPresaInCaricoPraticaController {
 				}
 			}
 
-
-			iterAssegnaziPresaInCaricoPraticaInstance.properties = params
+			//iterAssegnaziPresaInCaricoPraticaInstance.properties = params
+			//TODO: sequestro?
+			//iterAssegnaziPresaInCaricoPraticaInstance.pratica.statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
 			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
-				params.username = iterAssegnaziPresaInCaricoPraticaInstance.username
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"
-				Boolean isComplete = params["_action_update"].equals(message(code: 'default.button.complete.label', default: 'Complete'))
-				if (isComplete) {
-					params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
-					completeTask(params)
-				} else {
-					params.action="show"
-					saveTask(params)
-				}
-				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:isComplete?:null])
+				params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
+				completeTask(params)
+				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
 			}
 			else {
 				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
@@ -186,8 +282,75 @@ class IterAssegnaziPresaInCaricoPraticaController {
 			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), params.id])}"
 			redirect(controller: "task", action: "myTaskList")
 		}
-		*/
-		println "lllllllllllllllllllllllllllllllll"
+	}
+	
+	def evidenza = {
+		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
+		if (iterAssegnaziPresaInCaricoPraticaInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (iterAssegnaziPresaInCaricoPraticaInstance.version > version) {
+
+					iterAssegnaziPresaInCaricoPraticaInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+						message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica')]
+					as Object[], "Another user has updated this IterAssegnaziPresaInCaricoPratica while you were editing")
+					render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+					return
+				}
+			}
+
+			//iterAssegnaziPresaInCaricoPraticaInstance.properties = params
+			//TODO: evidenza?
+			//iterAssegnaziPresaInCaricoPraticaInstance.pratica.statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
+			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
+				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"
+				params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
+				completeTask(params)
+				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
+			}
+			else {
+				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+			}
+		}
+		else {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), params.id])}"
+			redirect(controller: "task", action: "myTaskList")
+		}
+	}
+	
+	def performSceltaTipologia = {
+		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
+		if (iterAssegnaziPresaInCaricoPraticaInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (iterAssegnaziPresaInCaricoPraticaInstance.version > version) {
+
+					iterAssegnaziPresaInCaricoPraticaInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+						message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica')]
+					as Object[], "Another user has updated this IterAssegnaziPresaInCaricoPratica while you were editing")
+					render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+					return
+				}
+			}
+
+			//iterAssegnaziPresaInCaricoPraticaInstance.properties = params
+			//iterAssegnaziPresaInCaricoPraticaInstance.pratica.statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
+			iterAssegnaziPresaInCaricoPraticaInstance.pratica.tipologiaLegale = TipologiaLegale.get(params.tipologiaLegaleId as long)
+			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
+				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"
+				params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
+				completeTask(params)
+				//TODO : QUI DOVREBBE ESSERCI UN REDIRECT ALLA ACTION CHE SANCISCE L'INIZIO DEL NUOVO WORKFLOW
+				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
+			}
+			else {
+				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+			}
+		}
+		else {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), params.id])}"
+			redirect(controller: "task", action: "myTaskList")
+		}
 	}
 
 	def delete = {

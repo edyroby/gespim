@@ -79,12 +79,12 @@
                 </table>
             <g:if test="${!params.complete && params.taskId}">
             <div class="buttons_multipli">
-                <g:form action="performEsameFascicolo">
+                <g:form>
                     <g:hiddenField name="id" value="${iterAssegnaziPresaInCaricoPraticaInstance?.id}" />
                     <g:hiddenField name="taskId" value="${params.taskId}" />
                     <span class="button"><g:submitButton name="save" class="save" value="${message(code: 'default.button.save.label', default: 'Save')}" /></span>
-                    <span class="button"><g:submitButton name="performEsameFascicolo" class="save" value="${message(code: 'default.button.complete.label', default: 'Complete')}" /></span>
-                    <span class="button"><g:submitButton name="riassegna" class="save" value="${message(code: 'default.button.complete.label', default: 'Riassegna')}" /></span>
+                    <span class="button"><g:actionSubmit action="performEsameFascicolo" class="save" value="${message(code: 'default.button.complete.label', default: 'Complete')}" /></span>
+                    <span class="button"><g:actionSubmit action="riassegna" class="save" value="${message(code: 'default.button.complete.label', default: 'Riassegna')}" /></span>
                 </g:form>
             </div>
             </g:if>
