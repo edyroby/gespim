@@ -10,7 +10,7 @@
     <body>
         <div class="body">
         <div id="modifica_pratica">
-            <h1><g:message code="default.show.label" args="[entityName]" /></h1>
+            <h3>Esame Fascicolo della Pratica</h3>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -82,7 +82,9 @@
                 <g:form>
                     <g:hiddenField name="id" value="${iterAssegnaziPresaInCaricoPraticaInstance?.id}" />
                     <g:hiddenField name="taskId" value="${params.taskId}" />
+                    <%-- 
                     <span class="button"><g:submitButton name="save" class="save" value="${message(code: 'default.button.save.label', default: 'Save')}" /></span>
+                    --%>
                     <span class="button"><g:actionSubmit action="performEsameFascicolo" class="save" value="${message(code: 'default.button.complete.label', default: 'Complete')}" /></span>
                     <span class="button"><g:actionSubmit action="riassegna" class="save" value="${message(code: 'default.button.complete.label', default: 'Riassegna')}" /></span>
                 </g:form>

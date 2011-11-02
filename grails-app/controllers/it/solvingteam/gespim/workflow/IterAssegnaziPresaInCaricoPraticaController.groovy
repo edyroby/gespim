@@ -5,6 +5,7 @@ import it.solvingteam.gespim.security.Utente;
 import it.solvingteam.gespim.tipologiche.StatoPratica;
 import it.solvingteam.gespim.tipologiche.TipologiaLegale;
 
+import it.solvingteam.gespim.assegnazione.AreaCompetenza;
 import it.solvingteam.gespim.pratica.Pratica;
 
 import org.activiti.engine.runtime.ProcessInstance;
@@ -26,6 +27,14 @@ class IterAssegnaziPresaInCaricoPraticaController {
 	}
 
 	def start = {
+		
+		if(!params.areaId){
+			flash.message = "Nessuna voce selezionata."
+			redirect(controller:'assegnazionePratica',action:'assegnazione',id:params.idPratica)
+			return
+		}
+		
+		def listaAreeSelezionate = AreaCompetenza.getAll(params.areaId?.collect{ it as long })
 
 		def iterAssegnaziPresaInCaricoPraticaInstance = new IterAssegnaziPresaInCaricoPratica()
 		//iterAssegnaziPresaInCaricoPraticaInstance.taskId = task.id
@@ -36,11 +45,18 @@ class IterAssegnaziPresaInCaricoPraticaController {
 			return
 			//TODO : gestire
 		}
-		params.listaUtenti = ["admin", "user"]
+		
+		def listaResponsabiliAreeSelezionate = []
+		listaAreeSelezionate?.each{area->
+			listaResponsabiliAreeSelezionate += Utente.findAllByAreaAndResponsabile(area,true)
+		}
+		
+		params.listaUtenti = listaResponsabiliAreeSelezionate?.collect{it.username}
 		params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
 		ProcessInstance pi = activitiService.startProcess(params)
 		Task task = activitiService.getUnassignedTask(session[sessionUsernameKey], pi.id)
 		redirect(controller:'task',action: "unassignedTaskList")
+		
 	}
 
 	def list = {
@@ -90,8 +106,8 @@ class IterAssegnaziPresaInCaricoPraticaController {
 		println"....................smistamento"+params
 		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
 		def user = springSecurityService.currentUser
-		def listaUtenti = Utente.findAllByArea(user.area)
-		[iterAssegnaziPresaInCaricoPraticaInstance:iterAssegnaziPresaInCaricoPraticaInstance,listaUtenti:(listaUtenti-user)]
+		def listaUtenti = Utente.findAllByAreaAndResponsabile(user.area,false)
+		[iterAssegnaziPresaInCaricoPraticaInstance:iterAssegnaziPresaInCaricoPraticaInstance,listaUtenti:listaUtenti-user]
 	}
 	
 	def esamefascicolo = {
@@ -157,6 +173,55 @@ class IterAssegnaziPresaInCaricoPraticaController {
 		}
 	}
 	
+	def performSmistamento = {
+		if(!params.username){
+			flash.message = "Selezionare almeno un Utenza."
+			redirect(action: "smistamento",id:params.id,params:[taskId:params.taskId])
+			return
+		}
+		
+		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
+		if (iterAssegnaziPresaInCaricoPraticaInstance) {
+			if (params.version) {
+				def version = params.version.toLong()
+				if (iterAssegnaziPresaInCaricoPraticaInstance.version > version) {
+
+					iterAssegnaziPresaInCaricoPraticaInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+						message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica')]
+					as Object[], "Another user has updated this IterAssegnaziPresaInCaricoPratica while you were editing")
+					render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+					return
+				}
+			}
+
+
+			iterAssegnaziPresaInCaricoPraticaInstance.properties = params
+			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
+				params.username = iterAssegnaziPresaInCaricoPraticaInstance.username
+				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"
+				//Boolean isComplete = params["_action_update"].equals(message(code: 'default.button.complete.label', default: 'Complete'))
+				//if (isComplete) {
+					params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
+					completeTask(params)
+				/*
+					} else {
+					params.action="show"
+					saveTask(params)
+				}
+				*/
+				redirect(controller:'task',action: "allTaskList", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
+			}
+			else {
+				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
+			}
+		}
+		else {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), params.id])}"
+			redirect(controller: "task", action: "myTaskList")
+		}
+	}
+	
+	
 	def performEsameFascicolo = {
 		def iterAssegnaziPresaInCaricoPraticaInstance = IterAssegnaziPresaInCaricoPratica.get(params.id)
 		if (iterAssegnaziPresaInCaricoPraticaInstance) {
@@ -192,7 +257,7 @@ class IterAssegnaziPresaInCaricoPraticaController {
 					saveTask(params)
 				}
 				*/
-				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
+				redirect(controller:'task',action: "allTaskList", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
 			}
 			else {
 				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
@@ -238,7 +303,7 @@ class IterAssegnaziPresaInCaricoPraticaController {
 					saveTask(params)
 				}
 				*/
-				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:false])
+				redirect(controller:'task',action: "allTaskList", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:false])
 			}
 			else {
 				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])

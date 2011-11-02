@@ -19,6 +19,7 @@ class AreaCompetenza {
 	static final String COD_AREA_SEGR_DIRIGENTE = "AC009"
 	
 	static hasMany = [utenti:Utente]
+	
 
     static constraints = {
 		codice(blank:false,unique:true)
@@ -33,4 +34,5 @@ class AreaCompetenza {
 	String toString(){
 		descrizione
 	}
+	
 }

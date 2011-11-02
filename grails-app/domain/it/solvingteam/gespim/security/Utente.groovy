@@ -17,6 +17,7 @@ class Utente {
 	boolean passwordExpired
 	
 	AreaCompetenza area
+	boolean responsabile
 
 	static constraints = {
 		username blank: false, unique: true
@@ -33,6 +34,7 @@ class Utente {
 	Set<Ruolo> getAuthorities() {
 		UtenteRuolo.findAllByUtente(this).collect { it.ruolo } as Set
 	}
+	
 
 	def beforeInsert() {
 		encodePassword()

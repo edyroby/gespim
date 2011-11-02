@@ -3,8 +3,10 @@ package it.solvingteam.gespim.security
 class Ruolo implements org.activiti.engine.identity.Group{
 	
 	static final String ROLE_ADMIN = "ROLE_ADMIN"
+	static final String ROLE_RESPONSABILE_AREA = "ROLE_RESPONSABILE_AREA"
 	static final String ROLE_RESPONSABILE_AREA_LEGALE = "ROLE_RESPONSABILE_AREA_LEGALE"
 	static final String ROLE_USER_AREA_LEGALE = "ROLE_USER_AREA_LEGALE"
+	static final String ROLE_USER_AREA = "ROLE_USER_AREA"
 	static final String ROLE_USER = "ROLE_USER"
 	static final String ROLE_PROTOCOLLO = "ROLE_PROTOCOLLO"
 

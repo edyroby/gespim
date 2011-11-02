@@ -40,7 +40,7 @@
                                   <label for="username">Utente</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: iterAssegnaziPresaInCaricoPraticaInstance, field: 'username', 'errors')}">
-                                    <g:radioGroup name="username" values="${listaUtenti?.collect{it.username}}"  >
+                                    <g:radioGroup name="username" labels="${listaUtenti?.collect{it.username}}" values="${listaUtenti?.collect{it.username}}"  >
 										<p>${it.label}: ${it.radio}</p>
 									</g:radioGroup>
                                 </td>
@@ -85,8 +85,10 @@
                         </tbody>
                     </table>
                 <div class="buttons_multipli">
+                    <%-- 
                     <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.complete.label', default: 'Complete')}" /></span>
+                    --%>
+                    <span class="button"><g:actionSubmit class="save" action="performSmistamento" value="${message(code: 'default.button.complete.label', default: 'Complete')}" /></span>
                     <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
                 </div>
             </g:form>

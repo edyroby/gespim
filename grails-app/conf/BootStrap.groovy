@@ -16,7 +16,7 @@ class BootStrap {
 
     def init = { servletContext ->
 		String webdir = servletContext.getRealPath("/")
-		/*
+		
 		if (GrailsUtil.environment != 'test') {
             prepareTipologiche(webdir)
 			prepareUserRole()
@@ -24,7 +24,7 @@ class BootStrap {
             fixtureLoader.load('richiedenti')
             fixtureLoader.load('appuntamenti_dev')
         }
-        */
+        
 
     }
     def destroy = {
@@ -52,18 +52,18 @@ class BootStrap {
 		 protocolloRole.save(failOnError: true)
 		}
 		
-		def areaLegaleRoleResp = Ruolo.findByAuthority(Ruolo.ROLE_RESPONSABILE_AREA_LEGALE)
-		if (!areaLegaleRoleResp) {
-		 areaLegaleRoleResp = new Ruolo(authority: Ruolo.ROLE_RESPONSABILE_AREA_LEGALE, name: 'Responsabile Area Legale')
-		 areaLegaleRoleResp.id = Ruolo.ROLE_RESPONSABILE_AREA_LEGALE
-		 areaLegaleRoleResp.save(failOnError: true)
+		def roleResponsabileArea = Ruolo.findByAuthority(Ruolo.ROLE_RESPONSABILE_AREA)
+		if (!roleResponsabileArea) {
+		 roleResponsabileArea = new Ruolo(authority: Ruolo.ROLE_RESPONSABILE_AREA, name: 'Responsabile Area')
+		 roleResponsabileArea.id = Ruolo.ROLE_RESPONSABILE_AREA
+		 roleResponsabileArea.save(failOnError: true)
 		}
 		
-		def areaLegaleRoleUser = Ruolo.findByAuthority(Ruolo.ROLE_USER_AREA_LEGALE)
-		if (!areaLegaleRoleUser) {
-		 areaLegaleRoleUser = new Ruolo(authority: Ruolo.ROLE_USER_AREA_LEGALE, name: 'Utente Area Legale')
-		 areaLegaleRoleUser.id = Ruolo.ROLE_USER_AREA_LEGALE
-		 areaLegaleRoleUser.save(failOnError: true)
+		def roleUserArea = Ruolo.findByAuthority(Ruolo.ROLE_USER_AREA)
+		if (!roleUserArea) {
+		 roleUserArea = new Ruolo(authority: Ruolo.ROLE_USER_AREA, name: 'Utente Area')
+		 roleUserArea.id = Ruolo.ROLE_USER_AREA
+		 roleUserArea.save(failOnError: true)
 		}
   
 		def testUser = new Utente(username: 'admin', enabled: true,
@@ -71,6 +71,7 @@ class BootStrap {
 		def area2 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_LEGALE)
 		if(area2){
 			testUser.area = area2
+			testUser.responsabile = true
 			area2.addToUtenti(testUser)
 		}
 		testUser.save(flush: true)
@@ -98,18 +99,18 @@ class BootStrap {
 		def area3 = AreaCompetenza.findByCodice(AreaCompetenza.COD_AREA_FLUSSI)
 		if(area3){
 			testUser3.area = area3
-			
+			area3.addToUtenti(testUser3)
 		}
 		testUser3.save(flush: true)
 		area3.save(flush:true)
   
 		UtenteRuolo.create testUser, adminRole, true
 		UtenteRuolo.create testUser, protocolloRole, true
-		UtenteRuolo.create testUser, areaLegaleRoleResp, true
+		UtenteRuolo.create testUser, roleResponsabileArea, true
 		UtenteRuolo.create classicUser, userRole, true
 		UtenteRuolo.create testUser2, userRole, true
-		UtenteRuolo.create testUser2, areaLegaleRoleUser, true
-		UtenteRuolo.create legale2, areaLegaleRoleUser, true
+		UtenteRuolo.create testUser2, roleUserArea, true
+		UtenteRuolo.create legale2, roleUserArea, true
 		UtenteRuolo.create testUser3, userRole, true
 		
 		RequestMap.findByUrlAndConfigAttribute('/**', 'IS_AUTHENTICATED_FULLY')?:new RequestMap(url:'/**', configAttribute:'IS_AUTHENTICATED_FULLY').save()
