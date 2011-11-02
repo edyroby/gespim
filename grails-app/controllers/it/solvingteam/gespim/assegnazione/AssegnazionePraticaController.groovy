@@ -1,6 +1,7 @@
 package it.solvingteam.gespim.assegnazione
 
 import it.solvingteam.gespim.pratica.Pratica;
+import it.solvingteam.gespim.workflow.IterAssegnaziPresaInCaricoPratica;
 
 import java.util.Map;
 
@@ -17,6 +18,11 @@ class AssegnazionePraticaController {
 		if (!praticaInstance) {
 			flash.error = "${message(code: 'default.not.found.message', args: [message(code: 'pratica.label', default: 'Pratica'), params.id])}"
 			redirect(controller:'pratica',action: "search")
+			return
+		}
+		if(IterAssegnaziPresaInCaricoPratica.findByPratica(praticaInstance)){
+			flash.message = "La pratica risulta essere gia' assegnata"
+			redirect(controller:'pratica',action: "showDettaglioPratica",id:params.id)
 			return
 		}
 		return [praticaInstance: praticaInstance,areeMap:buildAree(praticaInstance)]

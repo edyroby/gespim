@@ -21,6 +21,8 @@ class Pratica {
 	
 	Richiedente richiedente
 	
+	boolean presaInCarico
+	
 	static hasMany = [beneficiari:Beneficiario,
 		assegnazioni:AssegnazionePratica,iter:IterPratica,documenti:DocumentObject]
 

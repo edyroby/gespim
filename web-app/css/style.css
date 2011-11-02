@@ -7,7 +7,6 @@ body {
 	font: 12px "Lucida Grande","Lucida Sans Unicode",geneva,verdana,sans-serif;
 	margin:10px;
 	color:#555;
-	text-align: center;
 }
 
 #test-content {
@@ -982,6 +981,10 @@ label {
 	
 }
 
+.buttons_multipli_menu{
+	 text-align: center;
+}
+
 .buttons_multipli_menu a{
 	 background:#ff9900;
 	 color:#fff;
@@ -990,7 +993,11 @@ label {
 	 text-align:center;
 	 text-decoration: none;
 	 width: auto;
+	 padding: 1px 13px 1px 14px;
 }
+
+
+
 
 .risultati img {
 	

@@ -16,7 +16,7 @@ class BootStrap {
 
     def init = { servletContext ->
 		String webdir = servletContext.getRealPath("/")
-		
+		/*
 		if (GrailsUtil.environment != 'test') {
             prepareTipologiche(webdir)
 			prepareUserRole()
@@ -24,7 +24,7 @@ class BootStrap {
             fixtureLoader.load('richiedenti')
             fixtureLoader.load('appuntamenti_dev')
         }
-        
+        */
 
     }
     def destroy = {
