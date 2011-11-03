@@ -239,7 +239,7 @@ class IterAssegnaziPresaInCaricoPraticaController {
  
 
 			iterAssegnaziPresaInCaricoPraticaInstance.properties = params
-			iterAssegnaziPresaInCaricoPraticaInstance.pratica.statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
+			iterAssegnaziPresaInCaricoPraticaInstance.pratica.statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_IN_LAVORAZIONE)
 			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
 				params.username = iterAssegnaziPresaInCaricoPraticaInstance.username
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"

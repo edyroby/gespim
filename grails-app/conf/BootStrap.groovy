@@ -132,6 +132,9 @@ class BootStrap {
 		new StatoPratica(codice:StatoPratica.COD_STATO_IN_EVIDENZA,descrizione:StatoPratica.mappaCodici[StatoPratica.COD_STATO_IN_EVIDENZA]).save()
 		new StatoPratica(codice:StatoPratica.COD_STATO_ATTESA_PARERE_QUESTURA,descrizione:StatoPratica.mappaCodici[StatoPratica.COD_STATO_ATTESA_PARERE_QUESTURA]).save()
 		new StatoPratica(codice:StatoPratica.COD_STATO_ATTESA_PARERE_DPL,descrizione:StatoPratica.mappaCodici[StatoPratica.COD_STATO_ATTESA_PARERE_DPL]).save()
+		new StatoPratica(codice:StatoPratica.COD_STATO_CONVOCATA,descrizione:StatoPratica.mappaCodici[StatoPratica.COD_STATO_CONVOCATA]).save()
+		new StatoPratica(codice:StatoPratica.COD_STATO_IN_LAVORAZIONE,descrizione:StatoPratica.mappaCodici[StatoPratica.COD_STATO_IN_LAVORAZIONE]).save()
+		
 		
 		//Tipologia legale
 		new TipologiaLegale(codice:TipologiaLegale.COD_ISTANZA_DI_RIESAME,descrizione:TipologiaLegale.mappaCodici[TipologiaLegale.COD_ISTANZA_DI_RIESAME]).save()
