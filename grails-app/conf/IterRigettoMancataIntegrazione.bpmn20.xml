@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="iterRigettoMancataIntegrazione" name="IterRigettoMancataIntegrazione">
+    <documentation>Place documentation for the 'IterRigettoMancataIntegrazione' process here.</documentation>
+    
+    <startEvent id="start" name="Start"></startEvent>
+    
+    <userTask id="sceltaoperazione" name="Scelta Operazione" activiti:assignee="${username}">
+    </userTask>
+    
+    <sequenceFlow id="flow1" name="" sourceRef="start" targetRef="sceltaoperazione"></sequenceFlow>
+    
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    
+    <sequenceFlow id="flow2" name="" sourceRef="sceltaoperazione" targetRef="exclusivegateway1"></sequenceFlow>
+    
+    <userTask id="sceltaatto" name="Scelta Atto" activiti:assignee="${username}"></userTask>
+    
+    <sequenceFlow id="stampadecreto" name="Stampa Decreto" sourceRef="exclusivegateway1" targetRef="sceltaatto">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operazione == "stampa"}]]></conditionExpression>
+    </sequenceFlow>
+    
+    <userTask id="fissadata" name="Fissa Data" activiti:assignee="${username}"></userTask>
+    
+    <sequenceFlow id="flow3" name="Fissa Data" sourceRef="exclusivegateway1" targetRef="fissadata">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operazione == "convoca"}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" name="" sourceRef="sceltaatto" targetRef="exclusivegateway2"></sequenceFlow>
+    <userTask id="vidimazione" name="Vidimazione" activiti:candidateGroups="ROLE_DIRIGENTE"></userTask>
+    <sequenceFlow id="inevidenza" name="In Evidenza" sourceRef="exclusivegateway2" targetRef="vidimazione">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoAtto=="IN_EVIDENZA"}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="approvazione" name="Approvazione"></exclusiveGateway>
+    <sequenceFlow id="flow5" name="" sourceRef="vidimazione" targetRef="approvazione"></sequenceFlow>
+    <userTask id="stampaatto" name="Stampa Atto" activiti:assignee="${username}"></userTask>
+    <sequenceFlow id="approvato" name="Approvato" sourceRef="approvazione" targetRef="stampaatto">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isApprovato}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="notapprovato" name="Respinto" sourceRef="approvazione" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!isApprovato}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="immediata" name="Immediata" sourceRef="exclusivegateway2" targetRef="stampaatto">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoAtto=="SCHEDULATA"}]]></conditionExpression>
+    </sequenceFlow>
+    
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      	<timerEventDefinition>
+			<timeDuration>PT5M</timeDuration>
+		</timerEventDefinition>
+    </intermediateCatchEvent>
+    
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow6" name="" sourceRef="stampaatto" targetRef="endevent2"></sequenceFlow>
+    <userTask id="convocazione" name="Convocazione" activiti:assignee="${username}"></userTask>
+    <sequenceFlow id="flow7" name="" sourceRef="fissadata" targetRef="convocazione"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow8" name="" sourceRef="convocazione" targetRef="exclusivegateway3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="notOk" name="Rimandata per Presa in Carico" sourceRef="exclusivegateway3" targetRef="endevent3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${backToPresaInCarico}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="lavorata" name="Lavorata" sourceRef="exclusivegateway3" targetRef="endevent4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ok}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="riconvoca" name="Riconvoca" sourceRef="exclusivegateway3" targetRef="convocazione">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!ok}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow9" name="" sourceRef="timerintermediatecatchevent1" targetRef="stampaatto"></sequenceFlow>
+    <sequenceFlow id="schedulata" name="SCHEDULATA" sourceRef="exclusivegateway2" targetRef="timerintermediatecatchevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoAtto=="SCHEDULATA"}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+</definitions>

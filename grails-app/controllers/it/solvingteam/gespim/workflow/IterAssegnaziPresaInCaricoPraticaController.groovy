@@ -401,12 +401,16 @@ class IterAssegnaziPresaInCaricoPraticaController {
 			//iterAssegnaziPresaInCaricoPraticaInstance.properties = params
 			//iterAssegnaziPresaInCaricoPraticaInstance.pratica.statoPratica = StatoPratica.findByCodice(StatoPratica.COD_STATO_LAVORATA)
 			iterAssegnaziPresaInCaricoPraticaInstance.pratica.tipologiaLegale = TipologiaLegale.get(params.tipologiaLegaleId as long)
+			//TODO GESTIRE ADEGUATAMENTE
+			def controllerTipologiaSelezionata = "iterRigettoMancataIntegrazione"
 			if (!iterAssegnaziPresaInCaricoPraticaInstance.hasErrors() && iterAssegnaziPresaInCaricoPraticaInstance.save(flush: true)) {
 				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterAssegnaziPresaInCaricoPratica.label', default: 'IterAssegnaziPresaInCaricoPratica'), iterAssegnaziPresaInCaricoPraticaInstance.id])}"
 				params.id =  iterAssegnaziPresaInCaricoPraticaInstance.id
 				completeTask(params)
 				//TODO : QUI DOVREBBE ESSERCI UN REDIRECT ALLA ACTION CHE SANCISCE L'INIZIO DEL NUOVO WORKFLOW
-				redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
+				//redirect(action: "show", id: iterAssegnaziPresaInCaricoPraticaInstance.id, params: [taskId:params.taskId, complete:true])
+				redirect(controller: controllerTipologiaSelezionata,action:"start",  params: [idPratica:iterAssegnaziPresaInCaricoPraticaInstance.pratica?.id])
+				return
 			}
 			else {
 				render(view: "edit", model: [iterAssegnaziPresaInCaricoPraticaInstance: iterAssegnaziPresaInCaricoPraticaInstance, myTasksCount: assignedTasksCount])
