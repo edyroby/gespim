@@ -10,20 +10,20 @@
     
     <sequenceFlow id="flow1" name="" sourceRef="start" targetRef="sceltaoperazione"></sequenceFlow>
     
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    
-    <sequenceFlow id="flow2" name="" sourceRef="sceltaoperazione" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exgat1" name="Exclusive Gateway" ></exclusiveGateway>
+     
+    <sequenceFlow id="flow2" name="" sourceRef="sceltaoperazione" targetRef="exgat1"></sequenceFlow>
     
     <userTask id="sceltaatto" name="Scelta Atto" activiti:assignee="${username}"></userTask>
     
-    <sequenceFlow id="stampadecreto" name="Stampa Decreto" sourceRef="exclusivegateway1" targetRef="sceltaatto">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operazione == "stampa"}]]></conditionExpression>
+    <sequenceFlow id="stampadecreto" name="Stampa Decreto" sourceRef="exgat1" targetRef="sceltaatto">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operazione == "STAMPA"}]]></conditionExpression>
     </sequenceFlow>
     
     <userTask id="fissadata" name="Fissa Data" activiti:assignee="${username}"></userTask>
     
-    <sequenceFlow id="flow3" name="Fissa Data" sourceRef="exclusivegateway1" targetRef="fissadata">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operazione == "convoca"}]]></conditionExpression>
+    <sequenceFlow id="flow3" name="Fissa Data" sourceRef="exgat1" targetRef="fissadata">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operazione=="convoca"}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" name="" sourceRef="sceltaatto" targetRef="exclusivegateway2"></sequenceFlow>
