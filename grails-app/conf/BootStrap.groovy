@@ -1,4 +1,8 @@
+import it.solvingteam.gespim.tipologiche.TipologiaLegale;
+
 import it.solvingteam.gespim.assegnazione.AreaCompetenza;
+import it.solvingteam.gespim.documentazione.Atto;
+import it.solvingteam.gespim.documentazione.TipoAtto;
 import it.solvingteam.gespim.security.*
 import it.solvingteam.gespim.tipologiche.StatoPratica
 import it.solvingteam.gespim.tipologiche.TipoBeneficiario
@@ -20,6 +24,7 @@ class BootStrap {
 		if (GrailsUtil.environment != 'test') {
             prepareTipologiche(webdir)
 			prepareUserRole()
+			prepareDatiProva()
             fixtureLoader.load('pratiche')
             fixtureLoader.load('richiedenti')
             fixtureLoader.load('appuntamenti_dev')
@@ -121,6 +126,13 @@ class BootStrap {
 		RequestMap.findByUrlAndConfigAttribute('/js/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/js/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/plugins/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/plugins/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
 		
+	}
+	
+	private void prepareDatiProva(){
+		new Atto(descrizione:"prova atto 1",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_RIGETTO_MANCATA_INTEGRAZIONE), nomeTemplate:"prova_atto",tipoAtto:TipoAtto.PREVIA_VIDMAZIONE).save(flush:true)
+		new Atto(descrizione:"prova atto 2",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_RIGETTO_MANCATA_INTEGRAZIONE),nomeTemplate:"prova_atto2",tipoAtto:TipoAtto.IMMEDIATA).save(flush:true)
+		new Atto(descrizione:"prova atto 3",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_RIGETTO_MANCATA_INTEGRAZIONE),nomeTemplate:"prova_atto3",tipoAtto:TipoAtto.SCHEDULATA).save(flush:true)
+		new Atto(descrizione:"prova atto 4",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_INAMMISSIBILITA),nomeTemplate:"prova_atto4",tipoAtto:TipoAtto.SCHEDULATA).save(flush:true)
 	}
 	
 	private void prepareTipologiche(webdir){

@@ -1,5 +1,6 @@
 package it.solvingteam.gespim.workflow
 
+import it.solvingteam.gespim.documentazione.Atto;
 import it.solvingteam.gespim.pratica.Pratica;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ class IterRigettoMancataIntegrazione {
 	Pratica pratica
 	//String taskId
 	String username
+	Atto atto
 
     static constraints = {
 		//area nullable:true
@@ -29,5 +31,6 @@ class IterRigettoMancataIntegrazione {
 		lastUpdated nullable:true
 		//taskId nullable:true
 		username nullable:true
+		atto nullable:true
     }
 }

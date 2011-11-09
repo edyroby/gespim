@@ -87,6 +87,45 @@ class IterRigettoMancataIntegrazioneController {
 		}
 		[iterRigettoMancataIntegrazioneInstance:iterRigettoMancataIntegrazioneInstance]
 	}
+	
+	def performSceltaAtto = {
+		println ".........................."+params
+		if(!params.attoId){
+			flash.message = "Selezionare atto."
+			redirect(controller:'iterRigettoMancataIntegrazione',action: "sceltaatto",id:params.id)
+			return
+		}
+		def iterRigettoMancataIntegrazioneInstance = IterRigettoMancataIntegrazione.get(params.id)
+		if (!iterRigettoMancataIntegrazioneInstance) {
+			flash.message = "Elemento non trovato."
+			redirect(controller: "task", action: "myTaskList")
+			return
+		}
+		if (params.version) {
+			def version = params.version.toLong()
+			if (iterRigettoMancataIntegrazioneInstance.version > version) {
+
+				iterRigettoMancataIntegrazioneInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [
+					message(code: 'iterRigettoMancataIntegrazione.label', default: 'IterRigettoMancataIntegrazione')]
+				as Object[], "Another user has updated this IterRigettoMancataIntegrazione while you were editing")
+				render(view: "sceltaatto", model: [iterRigettoMancataIntegrazioneInstance: iterRigettoMancataIntegrazioneInstance, myTasksCount: assignedTasksCount])
+				return
+			}
+		}
+		/*
+		iterRigettoMancataIntegrazioneInstance.properties = params
+		if (!iterRigettoMancataIntegrazioneInstance.hasErrors() && iterRigettoMancataIntegrazioneInstance.save(flush: true)) {
+			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'iterRigettoMancataIntegrazione.label', default: 'IterRigettoMancataIntegrazione'), iterRigettoMancataIntegrazioneInstance.id])}"
+			params.operazione = TipoOperazioneWF.STAMPA.name()
+			println "..........................++ params:"+params
+			completeTask(params)
+			redirect(controller:'task',action: "allTaskList", id: iterRigettoMancataIntegrazioneInstance.id, params: [taskId:params.taskId, complete:true])
+		}
+		else {
+			render(view: "sceltaoperazione", model: [iterRigettoMancataIntegrazioneInstance: iterRigettoMancataIntegrazioneInstance, myTasksCount: assignedTasksCount])
+		}
+		*/
+	}
 
 	def list = {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
