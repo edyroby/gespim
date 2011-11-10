@@ -21,28 +21,34 @@
     </sequenceFlow>
     
     <userTask id="fissadata" name="Fissa Data" activiti:assignee="${username}"></userTask>
-    
     <sequenceFlow id="flow3" name="Fissa Data" sourceRef="exgat1" targetRef="fissadata">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operazione=="convoca"}]]></conditionExpression>
     </sequenceFlow>
+    
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    
     <sequenceFlow id="flow4" name="" sourceRef="sceltaatto" targetRef="exclusivegateway2"></sequenceFlow>
+    
     <userTask id="vidimazione" name="Vidimazione" activiti:candidateGroups="ROLE_DIRIGENTE"></userTask>
     <sequenceFlow id="inevidenza" name="In Evidenza" sourceRef="exclusivegateway2" targetRef="vidimazione">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoAtto=="IN_EVIDENZA"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoAtto=="PREVIA_VIDIMAZIONE"}]]></conditionExpression>
     </sequenceFlow>
+    
     <exclusiveGateway id="approvazione" name="Approvazione"></exclusiveGateway>
+    
     <sequenceFlow id="flow5" name="" sourceRef="vidimazione" targetRef="approvazione"></sequenceFlow>
+    
     <userTask id="stampaatto" name="Stampa Atto" activiti:assignee="${username}"></userTask>
     <sequenceFlow id="approvato" name="Approvato" sourceRef="approvazione" targetRef="stampaatto">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isApprovato}]]></conditionExpression>
     </sequenceFlow>
+    
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="notapprovato" name="Respinto" sourceRef="approvazione" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!isApprovato}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="immediata" name="Immediata" sourceRef="exclusivegateway2" targetRef="stampaatto">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoAtto=="SCHEDULATA"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoAtto=="IMMEDIATA"}]]></conditionExpression>
     </sequenceFlow>
     
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">

@@ -6,12 +6,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'iterRigettoMancataIntegrazione.label', default: 'iterRigettoMancataIntegrazione')}" />
-        <title>Scelta Atto</title>
+        <title>Stampa Atto</title>
     </head>
     <body>
         <div class="body">
         <div id="modifica_pratica">
-            <h3>Scelta Atto</h3>
+            <h3>Stampa Atto</h3>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -35,30 +35,32 @@
                                 </td>
                             </tr>
                             
-                             <tr class="prop">
-                                <td valign="top">
-                                  <label for="attoId">Scelta Atto</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: iterRigettoMancataIntegrazioneInstance, field: 'atto', 'errors')}">
-                                    <g:select name="attoId" from="${it.solvingteam.gespim.documentazione.Atto.findAllByTipologiaLegale(iterRigettoMancataIntegrazioneInstance?.pratica?.tipologiaLegale)}" optionKey="id"  noSelection="['': ' -- Nessuna voce selezionata -- ']" optionValue="descrizione" />
-                                </td>
-                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="note"><g:message code="iterRigettoMancataIntegrazione.note.label" default="Note" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: iterRigettoMancataIntegrazioneInstance, field: 'note', 'errors')}">
-                                    <g:textArea name="note" cols="40" rows="5" value="${iterRigettoMancataIntegrazioneInstance?.note}" />
+                                     <g:textArea name="note" cols="40" rows="5" value="${iterRigettoMancataIntegrazioneInstance?.note}" />
                                 </td>
                             </tr>
+                            <tr>
+		                        <td valign="top">Atto</td>
+		                        
+		                        <td valign="top">
+										<g:link action="apriAllegato"  params="[id:iterRigettoMancataIntegrazioneInstance.id,idAtto:iterRigettoMancataIntegrazioneInstance.atto.id]">
+											<img src="/gespim/images/pdf.png" border="0" alt="Visualizza" > Stampa Atto
+										</g:link><br>
+								</td>
+		                        
+		                    </tr>
                             
                             
                         </tbody>
                     </table>
                 <div class="buttons_multipli">
                     <span class="button">
-                    	<g:actionSubmit class="save" action="performSceltaAtto" value="Conferma" />
+                    	<g:actionSubmit class="save" action="performStampaAtto" value="Stampa Completata" />
                     </span>
                     <%-- 
                     <span class="button"><g:actionSubmit class="save" action="evidenza" value="Evidenza" /></span>

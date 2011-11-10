@@ -43,6 +43,13 @@ class BootStrap {
 		 adminRole.save(failOnError: true)
 		}
 		
+		def dirigenteRole = Ruolo.findByAuthority(Ruolo.ROLE_DIRIGENTE)
+		if (!dirigenteRole) {
+		 dirigenteRole = new Ruolo(authority: Ruolo.ROLE_DIRIGENTE, name: 'Dirigente')
+		 dirigenteRole.id = Ruolo.ROLE_DIRIGENTE
+		 dirigenteRole.save(failOnError: true)
+		}
+		
 		def userRole = Ruolo.findByAuthority(Ruolo.ROLE_USER)
 		if (!userRole) {
 		 userRole = new Ruolo(authority: Ruolo.ROLE_USER, name: 'User')
@@ -81,6 +88,10 @@ class BootStrap {
 		}
 		testUser.save(flush: true)
 		
+		def dirigenteUser = new Utente(username: 'dirigente', enabled: true,
+			password: '222',nome:'dirigente',cognome:'dirigentee')
+	    dirigenteUser.save(flush: true)
+		
 		def classicUser = new Utente(username: 'user', enabled: true,
 			 password: '222',nome:'user1',cognome:'user1111')
 		classicUser.save(flush: true)
@@ -117,6 +128,8 @@ class BootStrap {
 		UtenteRuolo.create testUser2, roleUserArea, true
 		UtenteRuolo.create legale2, roleUserArea, true
 		UtenteRuolo.create testUser3, userRole, true
+		UtenteRuolo.create dirigenteUser, dirigenteRole, true
+		
 		
 		RequestMap.findByUrlAndConfigAttribute('/**', 'IS_AUTHENTICATED_FULLY')?:new RequestMap(url:'/**', configAttribute:'IS_AUTHENTICATED_FULLY').save()
 		RequestMap.findByUrlAndConfigAttribute('/login/**', 'IS_AUTHENTICATED_ANONYMOUSLY')?:new RequestMap(url:'/login/**', configAttribute:'IS_AUTHENTICATED_ANONYMOUSLY').save()
@@ -129,7 +142,7 @@ class BootStrap {
 	}
 	
 	private void prepareDatiProva(){
-		new Atto(descrizione:"prova atto 1",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_RIGETTO_MANCATA_INTEGRAZIONE), nomeTemplate:"prova_atto",tipoAtto:TipoAtto.PREVIA_VIDMAZIONE).save(flush:true)
+		new Atto(descrizione:"prova atto 1",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_RIGETTO_MANCATA_INTEGRAZIONE), nomeTemplate:"prova_atto",tipoAtto:TipoAtto.PREVIA_VIDIMAZIONE).save(flush:true)
 		new Atto(descrizione:"prova atto 2",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_RIGETTO_MANCATA_INTEGRAZIONE),nomeTemplate:"prova_atto2",tipoAtto:TipoAtto.IMMEDIATA).save(flush:true)
 		new Atto(descrizione:"prova atto 3",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_RIGETTO_MANCATA_INTEGRAZIONE),nomeTemplate:"prova_atto3",tipoAtto:TipoAtto.SCHEDULATA).save(flush:true)
 		new Atto(descrizione:"prova atto 4",tipologiaLegale:TipologiaLegale.findByCodice(TipologiaLegale.COD_INAMMISSIBILITA),nomeTemplate:"prova_atto4",tipoAtto:TipoAtto.SCHEDULATA).save(flush:true)

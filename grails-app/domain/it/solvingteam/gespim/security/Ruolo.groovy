@@ -9,6 +9,7 @@ class Ruolo implements org.activiti.engine.identity.Group{
 	static final String ROLE_USER_AREA = "ROLE_USER_AREA"
 	static final String ROLE_USER = "ROLE_USER"
 	static final String ROLE_PROTOCOLLO = "ROLE_PROTOCOLLO"
+	static final String ROLE_DIRIGENTE = "ROLE_DIRIGENTE"
 
 	String id
 	String name
