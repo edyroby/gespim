@@ -9,8 +9,9 @@
         <g:javascript library="application" />
     </head>
     <body>
-        
+            
         <div id="header"><img src="${resource(dir:'images',file:'emblema_header.png')}" alt="logo Sana"/></div>
+         <div id="utente_connesso">Utente Connesso: <strong><sec:loggedInUserInfo field="username"/></strong></div> 
     	 <ul id="menu">
     	  <g:if test="${current == 'cerca'}">
     	    <li><a title="Ricerca Pratiche" class="current"  href="${createLink(uri: '/')}"><g:message code="default.menu.ricercaPratiche.label"/></a></li>

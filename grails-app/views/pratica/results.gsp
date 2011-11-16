@@ -92,7 +92,7 @@
                             <td >
                             	<g:link class="show" action="showDettaglioPratica" id="${praticaInstance.id }"><img src="${resource(dir:'images',file:'lente.png')}" alt="Dettaglio"/></g:link>
                             </td>
-                        
+                        	
                         </tr>
                     </g:each>
                     </tbody>
